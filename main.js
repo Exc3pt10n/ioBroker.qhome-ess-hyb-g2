@@ -83,27 +83,25 @@ class QHomeAdapter extends utils.Adapter {
       (s) => typeof s === "string" && s.trim().length > 0
     );
 
+    this.pollingInterval = setInterval(
+      () => this.main(hostname),
+      uptIntervall * 1000
+    );
+
     if (!this.initialized) {
       this.initialized = true;
       await this.createStates();
 
       if (this.enableDbStorage) {
         await this.createDbTable();
+
+        this.midnightTimer = setInterval(() => {
+          const now = new Date();
+          if (now.getHours() === 23 && now.getMinutes() === 59) {
+            this.resetMeterReadings = true;
+          }
+        }, 60 * 1000); // prüft jede Minute
       }
-    }
-
-    this.pollingInterval = setInterval(
-      () => this.main(hostname),
-      uptIntervall * 1000
-    );
-
-    if (this.enableDbStorage) {
-      this.midnightTimer = setInterval(() => {
-        const now = new Date();
-        if (now.getHours() === 23 && now.getMinutes() === 59) {
-          this.resetMeterReadings = true;
-        }
-      }, 60 * 1000); // prüft jede Minute
     }
   }
 
@@ -348,14 +346,9 @@ class QHomeAdapter extends utils.Adapter {
       BtStusCd: {
         name: "Batteriestatuscode",
         unit: "",
-        states: { 0: "Entladen", 1: "Laden", 2: "Geladen" },
+        states: { 0: "Entladen", 1: "Laden", 2: "Bereit" },
       },
       ColecTm: { name: "Abfragezeitpunkt", type: "string", unit: "" },
-      ConsData: {
-        name: "Verbrauchswerte Durchschnittsverbrauch",
-        type: "string",
-        unit: "",
-      },
       ConsPw: { name: "Bedarf Leistung", unit: "kW" },
       EmsOpMode: { name: "EmsOpMode", unit: "" },
       ErrorCnt: { name: "Anzahl Fehler", unit: "" },

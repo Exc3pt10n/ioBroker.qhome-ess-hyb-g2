@@ -292,6 +292,30 @@ class QHomeAdapter extends utils.Adapter {
     }
   }
 
+  async createDbTable() {
+    const qry = `
+    CREATE TABLE IF NOT EXISTS ${this.dbName}.${this.dbTable} (
+      Timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      TodayGen float NOT NULL DEFAULT 0,
+      TodayDemand float NOT NULL DEFAULT 0,
+      TodayFeedIn float NOT NULL DEFAULT 0,
+      TodayCharged float NOT NULL DEFAULT 0,
+      TodayDischarged float NOT NULL DEFAULT 0,
+      PriceBuy FLOAT NOT NULL DEFAULT 0,
+      PriceLeasePayment FLOAT NOT NULL DEFAULT 0,
+      PRIMARY KEY (Timestamp)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `;
+
+    this.sendTo("sql.0", "query", qry, (result) => {
+      if (result.error) {
+        this.log.error(result.error);
+      } else if (this.DEBUG_SQL) {
+        this.log.info(`Rows: ${JSON.stringify(result.result)}`);
+      }
+    });
+  }
+
   async updateCurrentYear() {
     const qry = `
       SELECT 

@@ -2,51 +2,86 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Q.HOME+ ESS HYB-G2 Adapter</title>
-    <link rel="stylesheet" href="../../admin/css/adapter.css" />
+    <title>Q.HOME+ ESS HYB-G2 Konfiguration</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+      }
+      table {
+        border-spacing: 10px;
+      }
+      td:first-child {
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      input[type="number"] {
+        width: 100px;
+      }
+      input[type="text"] {
+        width: 200px;
+      }
+    </style>
   </head>
   <body>
-    <div class="adapter-container">
-      <h3>Q.HOME+ ESS HYB-G2 Einstellungen</h3>
-
-      <table>
-        <tr>
-          <td><label for="hostname">Hostname/IP</label></td>
-          <td><input type="text" id="hostname" /></td>
-        </tr>
-        <tr>
-          <td><label for="namespace">Namensraum</label></td>
-          <td><input type="text" id="namespace" /></td>
-        </tr>
-        <tr>
-          <td><label for="batCapacity">Speicherkapazität (kWh)</label></td>
-          <td><input type="number" id="batCapacity" /></td>
-        </tr>
-        <tr>
-          <td><label for="uptIntervall">Abfrageintervall (Sekunden)</label></td>
-          <td><input type="number" id="uptIntervall" /></td>
-        </tr>
-        <tr>
-          <td><label for="pSell">Einspeisevergütung (€/kWh)</label></td>
-          <td><input type="number" step="0.0001" id="pSell" /></td>
-        </tr>
-        <tr>
-          <td><label for="pBuy">Bezugspreis (€/kWh)</label></td>
-          <td><input type="number" step="0.0001" id="pBuy" /></td>
-        </tr>
-        <tr>
-          <td><label for="pLease">Pachtpreis (€/Monat)</label></td>
-          <td><input type="number" step="0.01" id="pLease" /></td>
-        </tr>
-        <tr>
-          <td><label for="dbName">Datenbankname</label></td>
-          <td><input type="text" id="dbName" /></td>
-        </tr>
-        <tr>
-          <td><label for="dbTable">Datenbanktabelle</label></td>
-          <td><input type="text" id="dbTable" /></td>
-        </tr>
-      </table>
-    </div>
+    <h2>Adapter-Konfiguration</h2>
+    <table>
+      <tr>
+        <td>ESS Hostname</td>
+        <td><input type="text" id="hostname" /></td>
+      </tr>
+      <tr>
+        <td>Batteriekapazität (kWh)</td>
+        <td><input type="number" id="batCapacity" min="0" /></td>
+      </tr>
+      <tr>
+        <td>Abfrageintervall (Sekunden)</td>
+        <td><input type="number" id="uptIntervall" min="1" /></td>
+      </tr>
+      <tr>
+        <td>Stromverkaufspreis (€/kWh)</td>
+        <td><input type="number" id="pSell" step="0.0001" min="0" /></td>
+      </tr>
+      <tr>
+        <td>Stromeinkaufspreis (€/kWh)</td>
+        <td><input type="number" id="pBuy" step="0.0001" min="0" /></td>
+      </tr>
+      <tr>
+        <td>Monatliche Leasingkosten (€)</td>
+        <td><input type="number" id="pLease" step="0.01" min="0" /></td>
+      </tr>
+      <tr>
+        <td>Datenbank speichern aktivieren</td>
+        <td><input type="checkbox" id="enableDbStorage" /></td>
+      </tr>
+      <tr>
+        <td>SQL-Instanz</td>
+        <td>
+          <select id="SqlInstance" class="select-instance" data-type="sql">
+            <option value="">Bitte wählen</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Datenbankname</td>
+        <td><input type="text" id="dbName" /></td>
+      </tr>
+      <tr>
+        <td>Datenbanktabelle</td>
+        <td><input type="text" id="dbTable" /></td>
+      </tr>
+      <tr>
+        <td>Zusätzliche PV-Quelle 1</td>
+        <td><input class="select-instance" id="pvSource1" /></td>
+      </tr>
+      <tr>
+        <td>Zusätzliche PV-Quelle 2</td>
+        <td><input class="select-instance" id="pvSource2" /></td>
+      </tr>
+      <tr>
+        <td>Zusätzliche PV-Quelle 3</td>
+        <td><input class="select-instance" id="pvSource3" /></td>
+      </tr>
+    </table>
   </body>
 </html>

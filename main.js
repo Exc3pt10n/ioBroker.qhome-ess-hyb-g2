@@ -18,7 +18,36 @@ class QHomeAdapter extends utils.Adapter {
     this.on("ready", this.onReady.bind(this));
   }
 
+  configValid() {
+    const c = this.config;
+
+    const isString = (v) => typeof v === "string" && v.trim().length > 0;
+    const isPositiveNumber = (v) =>
+      typeof v === "number" && isFinite(v) && v > 0;
+
+    return (
+      isString(c.hostname) &&
+      isPositiveNumber(c.batCapacity) &&
+      isPositiveNumber(c.uptIntervall) &&
+      isPositiveNumber(c.pBuy) &&
+      isPositiveNumber(c.pSell) &&
+      isPositiveNumber(c.pLease) &&
+      isString(c.SqlInstance) &&
+      isString(c.dbName) &&
+      isString(c.dbTable)
+    );
+  }
+
   async onReady() {
+    this.DpPath = `${this.name}.${this.instance}`;
+
+    if (!this.configValid()) {
+      this.log.warn(
+        "Konfiguration unvollständig oder ungültig. Adapterstart abgebrochen."
+      );
+      return;
+    }
+
     const {
       hostname,
       batCapacity,
@@ -28,32 +57,46 @@ class QHomeAdapter extends utils.Adapter {
       pLease,
       dbName,
       dbTable,
+      SqlInstance,
+      enableDbStorage,
     } = this.config;
 
-    this.DpPath = `${this.namespace}.${this.instance}`;
     this.batCapacity = batCapacity;
     this.pSell = pSell;
     this.pBuy = pBuy;
     this.pLease = pLease;
     this.dbName = dbName;
     this.dbTable = dbTable;
+    this.SqlInstance = SqlInstance;
+    this.enableDbStorage = enableDbStorage;
+
+    const { pvSource1, pvSource2, pvSource3 } = this.config;
+    this.pvSources = [pvSource1, pvSource2, pvSource3].filter(
+      (s) => typeof s === "string" && s.trim().length > 0
+    );
 
     if (!this.initialized) {
       this.initialized = true;
       await this.createStates();
-      //await this.createDbTable();
+
+      if (this.enableDbStorage) {
+        await this.createDbTable();
+      }
     }
 
     this.pollingInterval = setInterval(
       () => this.main(hostname),
       uptIntervall * 1000
     );
-    // this.midnightTimer = setInterval(() => {
-    //   const now = new Date();
-    //   if (now.getHours() === 23 && now.getMinutes() === 59) {
-    //     this.resetMeterReadings = true;
-    //   }
-    // }, 60 * 1000); // prüft jede Minute
+
+    if (this.enableDbStorage) {
+      this.midnightTimer = setInterval(() => {
+        const now = new Date();
+        if (now.getHours() === 23 && now.getMinutes() === 59) {
+          this.resetMeterReadings = true;
+        }
+      }, 60 * 1000); // prüft jede Minute
+    }
   }
 
   transformTimestamp(input) {
@@ -84,10 +127,22 @@ class QHomeAdapter extends utils.Adapter {
       const response = await axios.get(urlAPI);
       const status = response.data.ESSRealtimeStatus;
 
-      // const PvPwSungrow = await this.getStateAsync(
-      //   "modbus.0.inputRegisters.5016_Total_DC_Power"
-      // );
-      const PvPwTotal = parseFloat(status.PvPw); //+ (PvPwSungrow?.val || 0);
+      let PvPwTotal = parseFloat(status.PvPw) || 0;
+
+      for (const source of this.pvSources) {
+        if (typeof source !== "string" || source.trim() === "") continue;
+
+        try {
+          const state = await this.getStateAsync(source.trim());
+          const val = parseFloat(state?.val);
+          if (isFinite(val)) PvPwTotal += val;
+        } catch (err) {
+          this.log.warn(
+            `⚠️ Zusätzliche PV-Quelle '${source}' konnte nicht gelesen werden: ${err.message}`
+          );
+        }
+      }
+
       const BtSoc = parseFloat(status.BtSoc);
       const BtStusCd = parseInt(status.BtStusCd);
       const BtPw = parseFloat(status.BtPw);

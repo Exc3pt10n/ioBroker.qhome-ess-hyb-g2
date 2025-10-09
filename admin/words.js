@@ -3,10 +3,6 @@ systemDictionary = {
     "de": "Hostname/IP",
     "en": "Hostname/IP"
   },
-  "namespace": {
-    "de": "Namensraum",
-    "en": "Namespace"
-  },
   "batCapacity": {
     "de": "Speicherkapazität (kWh)",
     "en": "Battery capacity (kWh)"

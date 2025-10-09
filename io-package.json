@@ -8,7 +8,7 @@
         "de": "Erste Version mit direkter ESS-Integration"
       }
     },
-    "authors": ["Sebastian <deine@email.de>"],
+    "authors": ["Sebastian <kontakt@jansesoft.de>"],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "mode": "daemon",
@@ -25,15 +25,19 @@
     "support": true
   },
   "native": {
-    "hostname": "qhome.local",
-    "namespace": "Photovoltaik",
-    "batCapacity": 4,
+    "hostname": "",
+    "batCapacity": 0,
     "uptIntervall": 1,
-    "pSell": 0.0864,
-    "pBuy": 0.2974,
-    "pLease": 153.0,
-    "dbName": "ioBroker",
-    "dbTable": "qcells"
+    "pSell": 0,
+    "pBuy": 0,
+    "pLease": 0,
+    "enableDbStorage": false,
+    "SqlInstance": "",
+    "dbName": "",
+    "dbTable": "",
+    "pvSource1": "",
+    "pvSource2": "",
+    "pvSource3": ""
   },
   "instanceObjects": []
 }

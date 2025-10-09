@@ -19,6 +19,7 @@
       "de": "Q.HOME+ ESS HYB-G2"
     }
   },
+  "admin": "admin",
   "adminUI": {
     "config": "index.html",
     "custom": true,

@@ -31,10 +31,7 @@ class QHomeAdapter extends utils.Adapter {
       isPositiveNumber(c.uptIntervall) &&
       isPositiveNumber(c.pBuy) &&
       isPositiveNumber(c.pSell) &&
-      isPositiveNumber(c.pLease) &&
-      isString(c.SqlInstance) &&
-      isString(c.dbName) &&
-      isString(c.dbTable)
+      isPositiveNumber(c.pLease)
     );
   }
 

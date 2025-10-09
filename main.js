@@ -22,8 +22,10 @@ class QHomeAdapter extends utils.Adapter {
     const c = this.config;
 
     const isString = (v) => typeof v === "string" && v.trim().length > 0;
-    const isPositiveNumber = (v) =>
-      typeof v === "number" && isFinite(v) && v > 0;
+    const isPositiveNumber = (v) => {
+      const num = parseFloat(v);
+      return !isNaN(num) && isFinite(num) && num > 0;
+    };
 
     return (
       isString(c.hostname) &&
@@ -41,9 +43,16 @@ class QHomeAdapter extends utils.Adapter {
     this.log.info(`Adapter config: ${JSON.stringify(this.config)}`);
 
     if (!this.configValid()) {
-      this.log.warn(
+      this.log.error(
         "Konfiguration unvollständig oder ungültig. Adapterstart abgebrochen."
       );
+      this.log.error("Ungültige Konfiguration:");
+      this.log.error(`hostname: ${c.hostname}`);
+      this.log.error(`batCapacity: ${c.batCapacity}`);
+      this.log.error(`uptIntervall: ${c.uptIntervall}`);
+      this.log.error(`pBuy: ${c.pBuy}`);
+      this.log.error(`pSell: ${c.pSell}`);
+      this.log.error(`pLease: ${c.pLease}`);
       return;
     }
 

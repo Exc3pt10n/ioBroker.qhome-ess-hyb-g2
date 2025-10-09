@@ -135,6 +135,8 @@ class QHomeAdapter extends utils.Adapter {
       const response = await axios.get(urlAPI);
       const status = response.data.ESSRealtimeStatus;
 
+      this.setState("info.connection", true, true);
+
       let PvPwTotal = parseFloat(status.PvPw) || 0;
 
       for (const source of this.pvSources) {
@@ -243,6 +245,7 @@ class QHomeAdapter extends utils.Adapter {
         BtPw
       );
     } catch (ex) {
+      this.setState("info.connection", false, true);
       this.log.error(`main() error: ${ex.message}`);
     }
 

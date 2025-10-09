@@ -1,0 +1,34 @@
+{
+  "common": {
+    "name": "qhome-ess-hyb-g2",
+    "title": "Q.HOME+ ESS HYB-G2",
+    "version": "0.0.1",
+    "news": {
+      "0.0.1": {
+        "de": "Erste Version mit direkter ESS-Integration"
+      }
+    },
+    "authors": ["Sebastian <deine@email.de>"],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "qhome.png",
+    "enabled": true,
+    "loglevel": "info",
+    "titleLang": {
+      "de": "Q.HOME+ ESS HYB-G2"
+    }
+  },
+  "native": {
+    "hostname": "qhome.local",
+    "namespace": "Photovoltaik",
+    "batCapacity": 4,
+    "uptIntervall": 1,
+    "pSell": 0.0864,
+    "pBuy": 0.2974,
+    "pLease": 153.0,
+    "dbName": "ioBroker",
+    "dbTable": "qcells"
+  },
+  "instanceObjects": []
+}

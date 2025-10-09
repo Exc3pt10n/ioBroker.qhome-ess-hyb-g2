@@ -1,0 +1,14 @@
+{
+  "name": "iobroker.qhome-ess-hyb-g2",
+  "version": "0.0.1",
+  "description": "Adapter für Q.HOME+ ESS HYB-G2",
+  "main": "main.js",
+  "author": {
+    "name": "Sebastian",
+    "email": "deine@email.de"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

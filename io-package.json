@@ -24,6 +24,7 @@
     "custom": true,
     "support": true
   },
+  "admin": "admin",
   "native": {
     "hostname": "qhome.local",
     "namespace": "Photovoltaik",

@@ -38,6 +38,8 @@ class QHomeAdapter extends utils.Adapter {
   async onReady() {
     this.DpPath = `${this.name}.${this.instance}`;
 
+    this.log.info(`Adapter config: ${JSON.stringify(this.config)}`);
+
     if (!this.configValid()) {
       this.log.warn(
         "Konfiguration unvollständig oder ungültig. Adapterstart abgebrochen."

@@ -41,16 +41,16 @@ class QHomeAdapter extends utils.Adapter {
     if (!this.initialized) {
       this.initialized = true;
       await this.createStates();
-      await this.createDbTable();
+      //await this.createDbTable();
     }
 
     this.schedule(`*/${uptIntervall} * * * * *`, () => this.main(hostname));
-    this.schedule(
-      { time: { exactTime: true, start: "23:59" }, period: { days: 1 } },
-      () => {
-        this.resetMeterReadings = true;
-      }
-    );
+    // this.schedule(
+    //   { time: { exactTime: true, start: "23:59" }, period: { days: 1 } },
+    //   () => {
+    //     this.resetMeterReadings = true;
+    //   }
+    // );
   }
 
   transformTimestamp(input) {
@@ -81,10 +81,10 @@ class QHomeAdapter extends utils.Adapter {
       const response = await axios.get(urlAPI);
       const status = response.data.ESSRealtimeStatus;
 
-      const PvPwSungrow = await this.getStateAsync(
-        "modbus.0.inputRegisters.5016_Total_DC_Power"
-      );
-      const PvPwTotal = parseFloat(status.PvPw) + (PvPwSungrow?.val || 0);
+      // const PvPwSungrow = await this.getStateAsync(
+      //   "modbus.0.inputRegisters.5016_Total_DC_Power"
+      // );
+      const PvPwTotal = parseFloat(status.PvPw); //+ (PvPwSungrow?.val || 0);
       const BtSoc = parseFloat(status.BtSoc);
       const BtStusCd = parseInt(status.BtStusCd);
       const BtPw = parseFloat(status.BtPw);
@@ -182,6 +182,79 @@ class QHomeAdapter extends utils.Adapter {
 
     if (this.DEBUG_RUNTIME) {
       this.log.info(`${Date.now() - startTime} ms`);
+    }
+  }
+
+  async updateMeterReadings(PvPw, GridStusCd, GridPw, BtStusCd, BtPw) {
+    const keys = [
+      "TodayGen",
+      "TodayDemand",
+      "TodayFeedIn",
+      "TodayCharged",
+      "TodayDischarged",
+    ];
+
+    const values = {};
+    for (const key of keys) {
+      const state = await this.getStateAsync(`${this.DpPath}.${key}`);
+      values[key] = parseFloat(state?.val || 0);
+    }
+
+    if (this.resetMeterReadings) {
+      this.resetMeterReadings = false;
+
+      if (this.enableDbStorage) {
+        await this.saveMeterValuesToDb(
+          values.TodayGen,
+          values.TodayDemand,
+          values.TodayFeedIn,
+          values.TodayCharged,
+          values.TodayDischarged
+        );
+
+        await this.updateCurrentYear();
+        await this.updateTotals();
+      }
+
+      for (const key of keys) {
+        values[key] = 0;
+      }
+    }
+
+    const delta = (val) => (val / 3600) * this.config.uptIntervall;
+    values.TodayGen += delta(PvPw);
+
+    if (GridStusCd === 0) values.TodayDemand += delta(GridPw);
+    else if (GridStusCd === 1) values.TodayFeedIn += delta(GridPw);
+
+    if (BtStusCd === 0) values.TodayDischarged += delta(BtPw);
+    else if (BtStusCd === 1) values.TodayCharged += delta(BtPw);
+
+    const TodaySelfCons =
+      values.TodayGen -
+      values.TodayFeedIn -
+      values.TodayCharged +
+      values.TodayDischarged;
+    const TodayCons = TodaySelfCons + values.TodayDemand;
+    const TodayAutarky = TodayCons > 0 ? (TodaySelfCons / TodayCons) * 100 : 0;
+    const TodayCost = values.TodayDemand * this.pBuy;
+    const TodayEarn = values.TodayFeedIn * this.pSell;
+    const leaseCost = this.getPriceLeasePaymentToday();
+    const TodayEffectivePrice =
+      TodayCons > 0 ? (TodayCost + leaseCost - TodayEarn) / TodayCons : 0;
+
+    const output = {
+      ...values,
+      TodayCost,
+      TodayEarn,
+      TodayCons,
+      TodayAutarky,
+      TodaySelfCons,
+      TodayEffectivePrice,
+    };
+
+    for (const [key, val] of Object.entries(output)) {
+      await this.setStateAsync(`${this.DpPath}.${key}`, val);
     }
   }
 

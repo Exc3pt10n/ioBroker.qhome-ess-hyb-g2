@@ -381,7 +381,7 @@ class QHomeAdapter extends utils.Adapter {
           unit: config.unit || "",
           states: config.states || undefined,
           read: true,
-          write: false,
+          write: true,
         },
         native: {},
       });

@@ -19,6 +19,11 @@
       "de": "Q.HOME+ ESS HYB-G2"
     }
   },
+  "adminUI": {
+    "config": "index_m.html",
+    "custom": true,
+    "support": true
+  },
   "native": {
     "hostname": "qhome.local",
     "namespace": "Photovoltaik",

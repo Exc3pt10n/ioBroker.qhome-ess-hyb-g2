@@ -44,13 +44,16 @@ class QHomeAdapter extends utils.Adapter {
       //await this.createDbTable();
     }
 
-    this.schedule(`*/${uptIntervall} * * * * *`, () => this.main(hostname));
-    // this.schedule(
-    //   { time: { exactTime: true, start: "23:59" }, period: { days: 1 } },
-    //   () => {
+    this.pollingInterval = setInterval(
+      () => this.main(hostname),
+      uptIntervall * 1000
+    );
+    // this.midnightTimer = setInterval(() => {
+    //   const now = new Date();
+    //   if (now.getHours() === 23 && now.getMinutes() === 59) {
     //     this.resetMeterReadings = true;
     //   }
-    // );
+    // }, 60 * 1000); // prüft jede Minute
   }
 
   transformTimestamp(input) {

@@ -1,14 +1,54 @@
 {
   "name": "iobroker.qhome-ess-hyb-g2",
   "version": "0.0.1",
-  "description": "Adapter für Q.HOME+ ESS HYB-G2",
-  "main": "main.js",
+  "description": "Q.HOME+ ESS HYB-G2",
   "author": {
     "name": "Sebastian",
-    "email": "deine@email.de"
+    "email": "kontakt@jansesoft.de"
   },
+  "homepage": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2",
   "license": "MIT",
+  "keywords": [
+    "QCells Q.HOME+ ESS HYB-G2"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2"
+  },
   "dependencies": {
-    "axios": "^1.6.0"
-  }
+    "@iobroker/adapter-core": "^3.3.2"
+  },
+  "devDependencies": {
+    "@iobroker/testing": "^5.1.1",
+    "@types/chai": "^5.2.2",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/gulp": "^4.0.17",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^14.18.63",
+    "@types/proxyquire": "^1.3.31",
+    "@types/sinon": "^17.0.4",
+    "@types/sinon-chai": "^4.0.0",
+    "axios": "^1.12.2",
+    "chai": "^6.2.0",
+    "chai-as-promised": "^8.0.2",
+    "eslint": "^9.37.0",
+    "gulp": "^5.0.1",
+    "mocha": "^11.7.4",
+    "proxyquire": "^2.1.3",
+    "sinon": "^21.0.0",
+    "sinon-chai": "^4.0.1"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test:js": "mocha \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit",
+    "test": "npm run test:js && npm run test:package",
+    "lint": "eslint"
+  },
+  "bugs": {
+    "url": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/issues"
+  },
+  "readmeFilename": "README.md"
 }

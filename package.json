@@ -9,7 +9,13 @@
   "homepage": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2",
   "license": "MIT",
   "keywords": [
-    "QCells Q.HOME+ ESS HYB-G2"
+    "QCells",
+    "Q.HOME+",
+    "ESS",
+    "HYB-G2",
+    "energy",
+    "battery",
+    "inverter"
   ],
   "repository": {
     "type": "git",

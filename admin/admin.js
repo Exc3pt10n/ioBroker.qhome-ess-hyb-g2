@@ -1,34 +1,43 @@
-// admin/admin.js
 "use strict";
 
 function load(settings, onChange) {
-  for (const key in settings) {
-    if (!settings.hasOwnProperty(key)) continue;
-    const el = document.getElementById(key);
-    if (!el) continue;
+  if (!settings) return;
 
-    if (el.type === "checkbox") {
-      el.checked = settings[key];
+  $(".value").each(function () {
+    const $el = $(this);
+    const id = $el.attr("id");
+    if (!id || settings[id] === undefined) return;
+
+    if ($el.attr("type") === "checkbox") {
+      $el.prop("checked", settings[id]).on("change", () => onChange());
     } else {
-      el.value = settings[key];
+      $el
+        .val(settings[id])
+        .on("change", () => onChange())
+        .on("keyup", () => onChange());
     }
-
-    el.addEventListener("change", () => onChange());
-  }
+  });
 
   onChange(false);
+
+  // Materialize: Labels korrekt aktualisieren
+  if (window.M && M.updateTextFields) {
+    M.updateTextFields();
+  }
 }
 
 function save(callback) {
   const obj = {};
-  const inputs = document.querySelectorAll("input, select");
 
-  inputs.forEach((el) => {
-    if (!el.id) return;
-    if (el.type === "checkbox") {
-      obj[el.id] = el.checked;
+  $(".value").each(function () {
+    const $el = $(this);
+    const id = $el.attr("id");
+    if (!id) return;
+
+    if ($el.attr("type") === "checkbox") {
+      obj[id] = $el.prop("checked");
     } else {
-      obj[el.id] = el.value;
+      obj[id] = $el.val();
     }
   });
 

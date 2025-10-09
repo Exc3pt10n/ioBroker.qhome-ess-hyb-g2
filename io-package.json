@@ -20,11 +20,10 @@
     }
   },
   "adminUI": {
-    "config": "index_m.html",
+    "config": "index.html",
     "custom": true,
     "support": true
   },
-  "admin": "admin",
   "native": {
     "hostname": "qhome.local",
     "namespace": "Photovoltaik",

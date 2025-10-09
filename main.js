@@ -244,7 +244,9 @@ class QHomeAdapter extends utils.Adapter {
     const TodayEarn = values.TodayFeedIn * this.pSell;
     const leaseCost = this.getPriceLeasePaymentToday();
     const TodayEffectivePrice =
-      TodayCons > 0 ? (TodayCost + leaseCost - TodayEarn) / TodayCons : 0;
+      TodayCons > 0 && isFinite(TodayCons)
+        ? (TodayCost + leaseCost - TodayEarn) / TodayCons
+        : 0;
 
     const output = {
       ...values,
@@ -309,6 +311,16 @@ class QHomeAdapter extends utils.Adapter {
       RankPer: { name: "RankPer", unit: "" },
       BtPwCharge: { name: "Ladeleistung Batterie", unit: "W" },
       BtPwDisCharge: { name: "Entladeleistung Batterie", unit: "W" },
+      BtChargeIndicator: {
+        name: "Ladeindikator Batterie",
+        unit: "",
+        type: "number",
+      },
+      BtDisChargeIndicator: {
+        name: "Entladeindikator Batterie",
+        unit: "",
+        type: "number",
+      },
 
       // Tageswerte
       TodayDemand: { name: "Heute bezogen", unit: "kWh" },

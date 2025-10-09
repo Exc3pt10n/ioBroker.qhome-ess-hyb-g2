@@ -72,7 +72,7 @@ class QHomeAdapter extends utils.Adapter {
 
   async setStateAsync(id, val) {
     return new Promise((resolve) => {
-      this.setState(id, val, true, () => resolve());
+      this.setState(id, { val, ack: true }, () => resolve());
     });
   }
 
@@ -259,6 +259,14 @@ class QHomeAdapter extends utils.Adapter {
     for (const [key, val] of Object.entries(output)) {
       await this.setStateAsync(`${this.DpPath}.${key}`, val);
     }
+  }
+
+  async getPriceLeasePaymentToday() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    return Number((this.pLease / daysInMonth).toFixed(8));
   }
 
   async createStates() {

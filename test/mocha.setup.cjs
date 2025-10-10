@@ -1,6 +1,8 @@
 const chai = require('chai');
-const sinonChai = require('sinon-chai');
-const chaiAsPromised = require('chai-as-promised');
+
+// ESM-kompatible Plugins brauchen `.default`:
+const sinonChai = require('sinon-chai').default;
+const chaiAsPromised = require('chai-as-promised').default;
 
 chai.should();
 chai.use(sinonChai);

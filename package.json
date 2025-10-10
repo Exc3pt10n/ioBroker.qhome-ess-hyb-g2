@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "Q.HOME+ ESS HYB-G2",
   "type": "module",
-  "mocha": {
-    "require": "test/mocha.setup.cjs"
-  },
   "author": {
     "name": "Sebastian",
     "email": "kontakt@jansesoft.de"
@@ -51,7 +48,7 @@
   "main": "main.js",
   "scripts": {
     "test:js": "mocha \"{!(node_modules|test)/**/*.test.js,*.test.js,test/**/test!(PackageFiles|Startup).js}\"",
-    "test:package": "mocha test/package --exit",
+    "test:package": "mocha test/package --require ./test/mocha.setup.cjs --exit",
     "test:unit": "mocha test/unit --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",

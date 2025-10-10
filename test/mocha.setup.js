@@ -1,6 +1,9 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const chai = require('chai');
+const sinonChai = require('sinon-chai');
+const chaiAsPromised = require('chai-as-promised');
 
 chai.should();
 chai.use(sinonChai);

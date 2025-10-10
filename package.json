@@ -2,6 +2,7 @@
   "name": "iobroker.qhome-ess-hyb-g2",
   "version": "0.0.1",
   "description": "Q.HOME+ ESS HYB-G2",
+  "type": "module",
   "author": {
     "name": "Sebastian",
     "email": "kontakt@jansesoft.de"

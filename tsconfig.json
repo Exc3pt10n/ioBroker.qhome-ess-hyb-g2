@@ -30,7 +30,7 @@
     "include": [
         "**/*.js",
         "**/*.d.ts"
-    ],
+, "test/mocha.setup.cjs"    ],
     "exclude": [
         "node_modules/**",
         "admin/**"

@@ -1,20 +1,37 @@
 ![Logo](admin/qhome-ess-hyb-g2.png)
 # ioBroker.qhome-ess-hyb-g2
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.qhome-ess-hyb-g2.svg)](https://www.npmjs.com/package/iobroker.qhome-ess-hyb-g2)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.qhome-ess-hyb-g2.svg)](https://www.npmjs.com/package/iobroker.qhome-ess-hyb-g2)
-![Number of Installations (latest)](http://iobroker.live/badges/qhome-ess-hyb-g2-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/qhome-ess-hyb-g2-stable.svg)
-[![Dependency Status](https://img.shields.io/david/Exc3pt10n/iobroker.qhome-ess-hyb-g2.svg)](https://david-dm.org/Exc3pt10n/iobroker.qhome-ess-hyb-g2)
-[![Known Vulnerabilities](https://snyk.io/test/github/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/badge.svg)](https://snyk.io/test/github/Exc3pt10n/ioBroker.qhome-ess-hyb-g2)
-
-[![NPM](https://nodei.co/npm/iobroker.qhome-ess-hyb-g2.png?downloads=true)](https://nodei.co/npm/iobroker.qhome-ess-hyb-g2/)
+[![Test and Release](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test-and-release.yml)
+[![License: MIT](https://img.shields.io/github/license/Exc3pt10n/ioBroker.qhome-ess-hyb-g2)](LICENSE)
 
 ## qhome-ess-hyb-g2 adapter for ioBroker
 
 Liest die Echtzeitwerte eines QCells **Q.HOME+ ESS HYB-G2** über dessen lokale
 Web-Schnittstelle (`/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`) aus und stellt
 sie als Datenpunkte unter `qhome-ess-hyb-g2.<instanz>.*` bereit.
+
+### Installation
+
+Der Adapter ist nicht auf npm veröffentlicht und wird direkt aus GitHub installiert.
+
+**Admin-Oberfläche:** Reiter *Adapter* → GitHub-Symbol („Installieren aus eigener URL";
+ggf. Expertenmodus aktivieren) → Reiter *Beliebig* → folgende URL eintragen und
+installieren, danach eine Instanz anlegen:
+
+```
+https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/main
+```
+
+**Konsole** auf dem ioBroker-Host:
+
+```bash
+iobroker url https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/main
+iobroker add qhome-ess-hyb-g2
+```
+
+Updates werden auf dieselbe Weise installiert, Instanz und Einstellungen bleiben erhalten.
+
+Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 
 ### Konfiguration
 
@@ -112,8 +129,8 @@ npm test                 # Unit-Tests + Paketprüfung
 npm run test:integration # Startet den Adapter in einer Test-ioBroker-Instanz
 ```
 
-Lokal installieren: `npm pack`, das `.tgz` auf den ioBroker-Host kopieren und dort
-`cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, danach
+Einen lokalen Entwicklungsstand testen: `npm pack`, das `.tgz` auf den ioBroker-Host
+kopieren und dort `cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, danach
 `iobroker upload qhome-ess-hyb-g2`.
 
 ## Changelog

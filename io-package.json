@@ -41,8 +41,17 @@
       "pl": "Q.HOME+ ESS HYB-G2",
       "zh-cn": "Q.HOME+ ESS HYB-G2"
     },
-    "authors": ["Sebastian <kontakt@jansesoft.de>"],
-    "keywords": ["QCells Q.HOME+ ESS HYB-G2"],
+    "authors": [
+      "Sebastian <kontakt@jansesoft.de>"
+    ],
+    "keywords": [
+      "QCells",
+      "Q.HOME+",
+      "ESS",
+      "HYB-G2",
+      "photovoltaic",
+      "battery"
+    ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "main": "main.js",
@@ -51,34 +60,39 @@
     "extIcon": "https://raw.githubusercontent.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/master/admin/qhome-ess-hyb-g2.png",
     "readme": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/blob/master/README.md",
     "loglevel": "info",
-    "localLink": "%web_protocol%://%ip%:%web_port%/vis/edit.html",
     "mode": "daemon",
     "type": "energy",
     "compact": true,
-    "materialize": true,
-    "dependencies": [{ "js-controller": ">=1.4.2" }]
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "adminUI": {
+      "config": "json"
+    },
+    "connectionType": "local",
+    "dataSource": "poll",
+    "tier": 3,
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
+      }
+    ]
   },
   "native": {
-    "hostname": "",
-    "batCapacity": 0,
-    "uptIntervall": 1,
-    "pSell": 0,
-    "pBuy": 0,
-    "pLease": 0,
-    "enableDbStorage": false,
-    "SqlInstance": "",
-    "dbName": "",
-    "dbTable": "",
-    "pvSource1": "",
-    "pvSource2": "",
-    "pvSource3": ""
+    "hostname": "qhome.local",
+    "batCapacity": 4,
+    "uptIntervall": 1
   },
   "objects": [],
   "instanceObjects": [
     {
       "_id": "info",
       "type": "channel",
-      "common": { "name": "Information" },
+      "common": {
+        "name": "Information"
+      },
       "native": {}
     },
     {

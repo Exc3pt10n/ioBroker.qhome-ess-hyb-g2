@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "news": {
+      "0.1.0": {
+        "en": "Adapter is now operational: real-time values of the ESS (functionality of the former JavaScript script) and new admin UI\nEnergy counters for day, month, quarter, half-year, year and total incl. previous period, autarky and self-consumption rate",
+        "de": "Adapter lauffähig: Echtzeitwerte des ESS (Funktionsumfang des bisherigen JavaScript-Skripts) und neue Admin-Oberfläche\nEnergiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote",
+        "ru": "Адаптер работоспособен: данные ESS в реальном времени (функциональность прежнего JavaScript-скрипта) и новый интерфейс настроек\nСчётчики энергии за день, месяц, квартал, полугодие, год и всего, включая предыдущий период, автономность и долю собственного потребления",
+        "pt": "Adaptador operacional: valores em tempo real do ESS (funcionalidade do antigo script JavaScript) e nova interface de administração\nContadores de energia por dia, mês, trimestre, semestre, ano e total, incl. período anterior, autarquia e taxa de autoconsumo",
+        "nl": "Adapter werkt nu: realtime waarden van de ESS (functionaliteit van het vroegere JavaScript-script) en nieuwe beheerinterface\nEnergietellers per dag, maand, kwartaal, halfjaar, jaar en totaal incl. vorige periode, autarkie en eigenverbruiksquote",
+        "fr": "L'adaptateur est opérationnel : valeurs en temps réel de l'ESS (fonctionnalités de l'ancien script JavaScript) et nouvelle interface d'administration\nCompteurs d'énergie par jour, mois, trimestre, semestre, année et total, y compris la période précédente, l'autarcie et le taux d'autoconsommation",
+        "it": "Adattatore funzionante: valori in tempo reale dell'ESS (funzionalità del precedente script JavaScript) e nuova interfaccia di amministrazione\nContatori di energia per giorno, mese, trimestre, semestre, anno e totale, incl. periodo precedente, autarchia e quota di autoconsumo",
+        "es": "Adaptador operativo: valores en tiempo real del ESS (funcionalidad del antiguo script JavaScript) y nueva interfaz de administración\nContadores de energía por día, mes, trimestre, semestre, año y total, incl. período anterior, autarquía y tasa de autoconsumo",
+        "pl": "Adapter działa: wartości ESS w czasie rzeczywistym (funkcjonalność dotychczasowego skryptu JavaScript) i nowy interfejs administracyjny\nLiczniki energii za dzień, miesiąc, kwartał, półrocze, rok i łącznie, wraz z poprzednim okresem, autarkią i wskaźnikiem autokonsumpcji",
+        "uk": "Адаптер працює: дані ESS у реальному часі (функціональність попереднього JavaScript-скрипта) та новий інтерфейс налаштувань\nЛічильники енергії за день, місяць, квартал, півріччя, рік і загалом, включно з попереднім періодом, автономністю та часткою власного споживання",
+        "zh-cn": "适配器已可运行：ESS 实时数据（原 JavaScript 脚本的功能）和新的管理界面\n按日、月、季度、半年、年和总计的能量计数器，包括上一周期、自给率和自用率"
+      },
       "0.0.1": {
         "en": "initial release",
         "de": "Erstveröffentlichung",

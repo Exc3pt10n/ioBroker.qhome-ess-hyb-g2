@@ -12,82 +12,57 @@
 
 ## qhome-ess-hyb-g2 adapter for ioBroker
 
-Q.HOME+ ESS HYB-G2
+Liest die Echtzeitwerte eines QCells **Q.HOME+ ESS HYB-G2** über dessen lokale
+Web-Schnittstelle (`/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`) aus und stellt
+sie als Datenpunkte unter `qhome-ess-hyb-g2.<instanz>.*` bereit.
 
-## Developer manual
-This section is intended for the developer. It can be deleted later
+### Konfiguration
 
-### Getting started
+| Einstellung | Beschreibung | Standard |
+|---|---|---|
+| ESS Hostname / IP-Adresse | Hostname oder IP des Speichers | `qhome.local` |
+| Speicherkapazität (kWh) | Nutzbare Kapazität der Batterie | `4` |
+| Abfrageintervall (Sekunden) | Abstand zwischen zwei Abrufen | `1` |
 
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.qhome-ess-hyb-g2`
-1. Initialize the current folder as a new git repository:  
-    ```bash
-    git init
-    git add .
-    git commit -m "Initial commit"
-    ```
-1. Link your local repository with the one on GitHub:  
-    ```bash
-    git remote add origin https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2
-    ```
+### Datenpunkte
 
-1. Push all files to the GitHub repo:  
-    ```bash
-    git push origin master
-    ```
-1. Head over to [main.js](main.js) and start programming!
+| ID | Beschreibung | Einheit |
+|---|---|---|
+| `ColecTm` | Abfragezeitpunkt | |
+| `PvPw` / `PvPwTotal` | Photovoltaikleistung | kW |
+| `ConsPw` | Bedarf Leistung | kW |
+| `GridPw` | Netzleistung | kW |
+| `GridStusCd` | Netzstatus (0 = Bezug, 1 = Einspeisung) | |
+| `GridPwPurchase` / `GridPwPurchaseWb` | Netzbezug | kW / W |
+| `GridPwFeedIn` / `GridPwFeedInWb` | Netzeinspeisung | kW / W |
+| `BtSoc` | Batterie Ladezustand | % |
+| `BtCap` | Batterie Kapazität (aktuell gespeicherte Energie) | kWh |
+| `BtPw` | Batterieleistung | kW |
+| `BtStusCd` | Batteriestatus (0 = Entladen, 1 = Laden, 2 = Geladen) | |
+| `BtPwCharge` / `BtPwDisCharge` | Lade-/Entladeleistung Batterie | W |
+| `BtChargeIndicator` / `BtDisChargeIndicator` | 1, wenn geladen / entladen wird | |
+| `BtLast` | Restlaufzeit bis voll / leer | Min |
+| `PcsPw` / `AbsPcsPw` | Wechselrichterleistung | W / kW |
+| `PowerOutletPw`, `OperStusCd`, `EmsOpMode`, `RankPer`, `ErrorCnt` | Rohwerte des ESS | |
+| `info.connection` | Verbindung zum ESS | |
 
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
+### Entwicklung
 
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description                                              |
-|-------------|----------------------------------------------------------|
-| `test:js`   | Executes the tests you defined in `*.test.js` files.     |
-| `test:package`    | Ensures your `package.json` and `io-package.json` are valid. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `lint` | Runs `ESLint` to check your code for formatting errors and potential bugs. |
+```bash
+npm ci
+npm run lint
+npm test                 # Unit-Tests + Paketprüfung
+npm run test:integration # Startet den Adapter in einer Test-ioBroker-Instanz
+```
 
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
-
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-Since you have chosen GitHub Actions as your CI service, you can 
-enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-To get your adapter released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a tarball from your dev directory:  
-    ```bash
-    npm pack
-    ```
-1. Upload the resulting file to your ioBroker host
-1. Install it locally (The paths are different on Windows):
-    ```bash
-    cd /opt/iobroker
-    npm i /path/to/tarball.tgz
-    ```
-
-For later updates, the above procedure is not necessary. Just do the following:
-1. Overwrite the changed files in the adapter directory (`/opt/iobroker/node_modules/iobroker.qhome-ess-hyb-g2`)
-1. Execute `iobroker upload qhome-ess-hyb-g2` on the ioBroker host
+Lokal installieren: `npm pack`, das `.tgz` auf den ioBroker-Host kopieren und dort
+`cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, danach
+`iobroker upload qhome-ess-hyb-g2`.
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+* (Sebastian) Adapter lauffähig gemacht: Funktionsumfang des bisherigen JavaScript-Skripts (Echtzeitwerte), jsonConfig-Oberfläche
 
 ### 0.0.1
 * (Sebastian) initial release

@@ -1,0 +1,25 @@
+{
+  "type": "panel",
+  "items": {
+    "hostname": {
+      "type": "text",
+      "label": { "en": "ESS hostname / IP address", "de": "ESS Hostname / IP-Adresse" },
+      "help": { "en": "e.g. qhome.local or 192.168.1.50", "de": "z. B. qhome.local oder 192.168.1.50" },
+      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+    },
+    "batCapacity": {
+      "type": "number",
+      "label": { "en": "Battery capacity (kWh)", "de": "Speicherkapazität (kWh)" },
+      "min": 0.1,
+      "step": 0.1,
+      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+    },
+    "uptIntervall": {
+      "type": "number",
+      "label": { "en": "Polling interval (seconds)", "de": "Abfrageintervall (Sekunden)" },
+      "min": 1,
+      "step": 1,
+      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+    }
+  }
+}

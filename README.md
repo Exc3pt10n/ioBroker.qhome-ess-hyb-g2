@@ -84,8 +84,24 @@ länger als einen ganzen Zeitraum aus, wird `previous` auf 0 gesetzt, statt eine
 älteren Zeitraum als Vorzeitraum anzuzeigen. Die Zählerstände werden alle 10 Sekunden
 und beim Beenden gespeichert und nach einem Neustart wieder eingelesen.
 
-Für einen Langzeitverlauf kann für die `previous`-Datenpunkte ein History-Adapter
-(History, SQL, InfluxDB) aktiviert werden.
+#### Verlauf aufzeichnen (z. B. SQL)
+
+Für einen Langzeitverlauf aktiviert man für die `previous`-Datenpunkte einen
+History-Adapter (SQL, InfluxDB, History). Beim Zeitraumwechsel schreibt der Adapter
+jeden Vorzeitraum-Wert **genau einmal**, auch wenn er gleich dem vorherigen ist. Als
+Zeitstempel verwendet er das **Ende des abgelaufenen Zeitraums**, zum Beispiel
+gestern 23:59:59.999. Dadurch erscheint der Wert im Diagramm beim richtigen Tag,
+Monat oder Jahr.
+
+Einstellungen je Datenpunkt (Zahnrad in der Objektansicht):
+
+| Einstellung | Wert |
+|---|---|
+| Aktiviert | ✔ |
+| Nur Änderungen aufzeichnen | **aus**, sonst fehlen Tage mit gleichem Wert |
+| Entprellzeit | 0 |
+| Gleiche Werte trotzdem aufzeichnen | 0 (aus) |
+| Speicherdauer | unbegrenzt |
 
 ### Entwicklung
 
@@ -103,7 +119,7 @@ Lokal installieren: `npm pack`, das `.tgz` auf den ioBroker-Host kopieren und do
 ## Changelog
 
 ### **WORK IN PROGRESS**
-* (Sebastian) Energiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote
+* (Sebastian) Energiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote; Vorzeitraum-Werte werden für History-Adapter mit Zeitstempel am Periodenende geschrieben
 * (Sebastian) Adapter lauffähig gemacht: Funktionsumfang des bisherigen JavaScript-Skripts (Echtzeitwerte), jsonConfig-Oberfläche
 
 ### 0.0.1

@@ -119,6 +119,22 @@ class QHomeEssHybG2 extends utils.Adapter {
     }
   }
 
+  /**
+   * Vorzeitraum-Werte nach einem Zeitraumwechsel schreiben.
+   * Immer schreiben (auch bei gleichem Wert), damit ein History-Adapter
+   * jeden abgeschlossenen Zeitraum aufzeichnet. Zeitstempel ist das Ende
+   * des Vorzeitraums, damit der Wert im Diagramm beim richtigen Tag steht.
+   * @param {string[]} periods
+   */
+  async writePreviousPeriods(periods) {
+    for (const period of periods) {
+      const ts = this.counters.periods[period].previousEnd || Date.now();
+      for (const [id, val] of Object.entries(this.counters.previousSnapshot(period))) {
+        await this.setStateAsync(`counters.${id}`, { val, ack: true, ts });
+      }
+    }
+  }
+
   async poll() {
     if (this.stopped) return;
 
@@ -138,16 +154,17 @@ class QHomeEssHybG2 extends utils.Adapter {
 
       const now = Date.now();
       const rolled = this.counters.update(values, now);
+      if (rolled.length > 0) {
+        this.log.debug(`Zeitraumwechsel: ${rolled.join(", ")}`);
+        await this.writePreviousPeriods(rolled);
+      }
       if (rolled.length > 0 || now - this.lastFlush >= COUNTER_FLUSH_MS) {
-        if (rolled.length > 0) this.log.debug(`Zeitraumwechsel: ${rolled.join(", ")}`);
         await this.flushCounters();
       }
       await this.setStateChangedAsync("info.connection", true, true);
       if (this.lastPollFailed) {
         this.log.info(`Verbindung zu ${this.hostname} wiederhergestellt`);
         this.lastPollFailed = false;
-    this.counters = new CounterEngine();
-    this.lastFlush = 0;
       }
     } catch (ex) {
       this.counters.interrupt();

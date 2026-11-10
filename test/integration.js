@@ -71,7 +71,14 @@ tests.integration(path.join(__dirname, ".."), {
     suite("Zähler nach Neustart", (getHarness) => {
       let server;
       before(async () => {
+        // Abrufe 3 und 4 schlagen fehl (Verbindungsabbruch simulieren)
+        let requests = 0;
         server = http.createServer((req, res) => {
+          requests++;
+          if (requests === 3 || requests === 4) {
+            res.statusCode = 500;
+            return res.end();
+          }
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify(ESS_RESPONSE));
         });
@@ -79,17 +86,20 @@ tests.integration(path.join(__dirname, ".."), {
       });
       after(() => server && server.close());
 
-      it("übernimmt gespeicherte Stände und zählt weiter", async function () {
+      it("übernimmt gespeicherte Stände, schreibt den Vortag und übersteht Verbindungsabbrüche", async function () {
         this.timeout(60000);
         const harness = getHarness();
         const ns = "qhome-ess-hyb-g2.0.counters";
-        const d = new Date();
         const pad = (n) => String(n).padStart(2, "0");
-        const today = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-        // Stand vor dem "Neustart": heute 5 kWh, gestern 7 kWh, gesamt 1000 kWh
-        await harness.states.setStateAsync(`${ns}.day.periodKey`, { val: today, ack: true });
+        const dayKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        const now = new Date();
+        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        const yesterday = dayKey(new Date(todayStart - 1));
+        // Stand vor dem "Neustart": Adapter lief zuletzt gestern.
+        // Gestern 5 kWh, vorgestern ebenfalls 5 kWh (gleicher Wert!), gesamt 1000 kWh
+        await harness.states.setStateAsync(`${ns}.day.periodKey`, { val: yesterday, ack: true });
         await harness.states.setStateAsync(`${ns}.day.PvGen`, { val: 5, ack: true });
-        await harness.states.setStateAsync(`${ns}.day.previous.PvGen`, { val: 7, ack: true });
+        await harness.states.setStateAsync(`${ns}.day.previous.PvGen`, { val: 5, ack: true, ts: todayStart - 86400000 });
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
@@ -97,12 +107,16 @@ tests.integration(path.join(__dirname, ".."), {
           native: { hostname: `127.0.0.1:${PORT + 1}`, batCapacity: 4, uptIntervall: 1 },
         });
         await harness.startAdapterAndWait();
-        await new Promise((r) => setTimeout(r, 3000));
+        await new Promise((r) => setTimeout(r, 6000));
         await harness.stopAdapter();
 
         const get = async (id) => (await harness.states.getStateAsync(`${ns}.${id}`)).val;
-        chai.expect(await get("day.PvGen")).to.be.greaterThan(5).and.lessThan(5.01);
-        chai.expect(await get("day.previous.PvGen")).to.equal(7);
+        // Vortag wurde trotz gleichem Wert neu geschrieben, mit Zeitstempel 23:59:59.999 gestern
+        const prev = await harness.states.getStateAsync(`${ns}.day.previous.PvGen`);
+        chai.expect(prev.val).to.equal(5);
+        chai.expect(prev.ts).to.equal(todayStart - 1);
+        // Heute neu begonnen, Gesamt läuft weiter, auch über den Verbindungsabbruch hinweg
+        chai.expect(await get("day.PvGen")).to.be.greaterThan(0).and.lessThan(0.01);
         chai.expect(await get("total.PvGen")).to.be.greaterThan(1000).and.lessThan(1000.01);
       });
     });

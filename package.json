@@ -1,6 +1,6 @@
 {
   "name": "iobroker.qhome-ess-hyb-g2",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Q.HOME+ ESS HYB-G2",
   "author": {
     "name": "Sebastian",

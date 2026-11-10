@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "news": {
-      "NEXT": {
+      "0.1.0": {
         "en": "Adapter is now operational: real-time values of the ESS (functionality of the former JavaScript script) and new admin UI\nEnergy counters for day, month, quarter, half-year, year and total incl. previous period, autarky and self-consumption rate",
         "de": "Adapter lauffähig: Echtzeitwerte des ESS (Funktionsumfang des bisherigen JavaScript-Skripts) und neue Admin-Oberfläche\nEnergiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote",
         "ru": "Адаптер работоспособен: данные ESS в реальном времени (функциональность прежнего JavaScript-скрипта) и новый интерфейс настроек\nСчётчики энергии за день, месяц, квартал, полугодие, год и всего, включая предыдущий период, автономность и долю собственного потребления",

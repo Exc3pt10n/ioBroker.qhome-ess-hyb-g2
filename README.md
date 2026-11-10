@@ -46,6 +46,47 @@ sie als Datenpunkte unter `qhome-ess-hyb-g2.<instanz>.*` bereit.
 | `PowerOutletPw`, `OperStusCd`, `EmsOpMode`, `RankPer`, `ErrorCnt` | Rohwerte des ESS | |
 | `info.connection` | Verbindung zum ESS | |
 
+### Energiezähler
+
+Unter `counters.*` zählt der Adapter die Energie für **Tag, Monat, Quartal, Halbjahr,
+Jahr und Gesamt**. Grundlage sind die abgerufenen Leistungswerte, integriert über die
+tatsächlich vergangene Zeit. Lücken von mehr als 60 Sekunden, zum Beispiel weil das
+ESS nicht erreichbar war, werden nicht hochgerechnet.
+
+| Zeitraum | Kanal | Vorzeitraum |
+|---|---|---|
+| Tag | `counters.day` | `counters.day.previous` (gestern) |
+| Monat | `counters.month` | `counters.month.previous` (Vormonat) |
+| Quartal | `counters.quarter` | `counters.quarter.previous` (Vorquartal) |
+| Halbjahr | `counters.halfyear` | `counters.halfyear.previous` (Vorhalbjahr) |
+| Jahr | `counters.year` | `counters.year.previous` (Vorjahr) |
+| Gesamt | `counters.total` | – (wird nie zurückgesetzt) |
+
+Jeder Kanal enthält:
+
+| ID | Beschreibung | Einheit |
+|---|---|---|
+| `PvGen` | PV-Erzeugung | kWh |
+| `GridPurchase` | Netzbezug | kWh |
+| `GridFeedIn` | Netzeinspeisung | kWh |
+| `BtCharged` | Batterie geladen | kWh |
+| `BtDischarged` | Batterie entladen | kWh |
+| `Cons` | Verbrauch | kWh |
+| `SelfSupply` | Eigenversorgung (Verbrauch − Netzbezug) | kWh |
+| `Autarky` | Autarkie (Eigenversorgung / Verbrauch) | % |
+| `SelfConsRate` | Eigenverbrauchsquote ((PV − Einspeisung) / PV) | % |
+| `periodKey` | aktueller Zeitraum, z. B. `2026-11-10`, `2026-Q4`, `2026-H2` | |
+
+Der Zeitraumwechsel wird bei jedem Abruf erkannt, nicht über einen Zeitplan. Der
+bisherige Stand wandert dann nach `previous` und der Zähler beginnt bei 0. Das
+funktioniert auch, wenn der Adapter zum Wechselzeitpunkt nicht lief. War der Adapter
+länger als einen ganzen Zeitraum aus, wird `previous` auf 0 gesetzt, statt einen
+älteren Zeitraum als Vorzeitraum anzuzeigen. Die Zählerstände werden alle 10 Sekunden
+und beim Beenden gespeichert und nach einem Neustart wieder eingelesen.
+
+Für einen Langzeitverlauf kann für die `previous`-Datenpunkte ein History-Adapter
+(History, SQL, InfluxDB) aktiviert werden.
+
 ### Entwicklung
 
 ```bash
@@ -62,6 +103,7 @@ Lokal installieren: `npm pack`, das `.tgz` auf den ioBroker-Host kopieren und do
 ## Changelog
 
 ### **WORK IN PROGRESS**
+* (Sebastian) Energiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote
 * (Sebastian) Adapter lauffähig gemacht: Funktionsumfang des bisherigen JavaScript-Skripts (Echtzeitwerte), jsonConfig-Oberfläche
 
 ### 0.0.1

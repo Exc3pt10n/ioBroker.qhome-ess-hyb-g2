@@ -3,6 +3,10 @@
 const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const { STATES, computeValues } = require("./lib/ess");
+const { CounterEngine, PERIODS, QUANTITIES, counterObjects } = require("./lib/counters");
+
+/** Zählerstände spätestens alle x ms in die Datenpunkte schreiben */
+const COUNTER_FLUSH_MS = 10 * 1000;
 
 class QHomeEssHybG2 extends utils.Adapter {
   /**
@@ -17,6 +21,8 @@ class QHomeEssHybG2 extends utils.Adapter {
     this.pollTimer = null;
     this.stopped = false;
     this.lastPollFailed = false;
+    this.counters = new CounterEngine();
+    this.lastFlush = 0;
 
     this.on("ready", this.onReady.bind(this));
     this.on("unload", this.onUnload.bind(this));
@@ -42,6 +48,8 @@ class QHomeEssHybG2 extends utils.Adapter {
     this.url = `http://${hostname}/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`;
 
     await this.createStates();
+    await this.createCounterObjects();
+    await this.restoreCounters();
     await this.poll();
   }
 
@@ -65,6 +73,52 @@ class QHomeEssHybG2 extends utils.Adapter {
     }
   }
 
+  async createCounterObjects() {
+    await this.extendObjectAsync("counters", {
+      type: "folder",
+      common: { name: "Energiezähler" },
+      native: {},
+    });
+    for (const [id, def] of Object.entries(counterObjects())) {
+      const common =
+        def.type === "state"
+          ? { type: "number", read: true, write: false, unit: "", ...def.common }
+          : def.common;
+      await this.extendObjectAsync(`counters.${id}`, {
+        type: def.type,
+        common,
+        native: {},
+      });
+    }
+  }
+
+  /** Letzten Zählerstand nach einem Neustart wieder einlesen */
+  async restoreCounters() {
+    const prefix = `${this.namespace}.counters.`;
+    const states = (await this.getStatesAsync("counters.*")) || {};
+    const val = (id) => {
+      const st = states[prefix + id];
+      return st ? st.val : undefined;
+    };
+    for (const [period, def] of Object.entries(PERIODS)) {
+      const values = {};
+      const previous = {};
+      for (const q of Object.keys(QUANTITIES)) {
+        values[q] = Number(val(`${period}.${q}`));
+        if (def.prevName) previous[q] = Number(val(`${period}.previous.${q}`));
+      }
+      this.counters.restore(period, val(`${period}.periodKey`), values, def.prevName ? previous : undefined);
+    }
+  }
+
+  /** Zählerstände in die Datenpunkte schreiben */
+  async flushCounters() {
+    this.lastFlush = Date.now();
+    for (const [id, val] of Object.entries(this.counters.snapshot())) {
+      await this.setStateChangedAsync(`counters.${id}`, val, true);
+    }
+  }
+
   async poll() {
     if (this.stopped) return;
 
@@ -81,12 +135,22 @@ class QHomeEssHybG2 extends utils.Adapter {
       for (const [id, val] of Object.entries(values)) {
         await this.setStateAsync(id, val, true);
       }
+
+      const now = Date.now();
+      const rolled = this.counters.update(values, now);
+      if (rolled.length > 0 || now - this.lastFlush >= COUNTER_FLUSH_MS) {
+        if (rolled.length > 0) this.log.debug(`Zeitraumwechsel: ${rolled.join(", ")}`);
+        await this.flushCounters();
+      }
       await this.setStateChangedAsync("info.connection", true, true);
       if (this.lastPollFailed) {
         this.log.info(`Verbindung zu ${this.hostname} wiederhergestellt`);
         this.lastPollFailed = false;
+    this.counters = new CounterEngine();
+    this.lastFlush = 0;
       }
     } catch (ex) {
+      this.counters.interrupt();
       await this.setStateChangedAsync("info.connection", false, true);
       const msg = `Abruf von ${this.hostname} fehlgeschlagen: ${ex.message}`;
       // Nur beim ersten Fehler warnen, danach nicht jede Sekunde das Log fluten
@@ -108,6 +172,12 @@ class QHomeEssHybG2 extends utils.Adapter {
     try {
       this.stopped = true;
       if (this.pollTimer) this.clearTimeout(this.pollTimer);
+      // Letzten Stand sichern (best effort, Unload wartet nicht)
+      if (this.lastFlush > 0) {
+        for (const [id, val] of Object.entries(this.counters.snapshot())) {
+          this.setState(`counters.${id}`, val, true);
+        }
+      }
       this.setState("info.connection", false, true);
     } finally {
       callback();

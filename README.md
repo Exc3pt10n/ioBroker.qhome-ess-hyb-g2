@@ -134,6 +134,8 @@ kopieren und dort `cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, da
 `iobroker upload qhome-ess-hyb-g2`.
 
 ## Changelog
+### **WORK IN PROGRESS**
+
 ### 0.1.0 (2026-11-10)
 * (Sebastian) Energiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote; Vorzeitraum-Werte werden für History-Adapter mit Zeitstempel am Periodenende geschrieben
 * (Sebastian) Adapter lauffähig gemacht: Funktionsumfang des bisherigen JavaScript-Skripts (Echtzeitwerte), jsonConfig-Oberfläche

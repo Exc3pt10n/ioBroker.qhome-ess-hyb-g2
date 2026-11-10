@@ -133,6 +133,23 @@ Einen lokalen Entwicklungsstand testen: `npm pack`, das `.tgz` auf den ioBroker-
 kopieren und dort `cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, danach
 `iobroker upload qhome-ess-hyb-g2`.
 
+### Release erstellen
+
+1. Bei jeder Änderung, die man im Betrieb bemerkt, unter `### **WORK IN PROGRESS**` im
+   Changelog eine Zeile `* (Autor) Beschreibung` ergänzen.
+2. Auf `main` mit sauberem Arbeitsverzeichnis ausführen:
+   ```bash
+   npm run release patch   # nur Fehlerbehebungen, z. B. 0.1.0 → 0.1.1
+   npm run release minor   # neue Funktionen, z. B. 0.1.1 → 0.2.0
+   ```
+   Das Skript erhöht die Version in `package.json` und `io-package.json`, macht aus dem
+   Platzhalter einen Versionseintrag mit Datum, übersetzt die News für `io-package.json`,
+   committet, setzt den Tag `vX.Y.Z` und pusht beides. Mit `--dry` lässt es sich
+   vorher gefahrlos ausprobieren.
+
+Eine bestimmte Version installieren:
+`https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/v0.1.0`
+
 ## Changelog
 ### **WORK IN PROGRESS**
 

@@ -46,7 +46,7 @@ Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 | ID | Beschreibung | Einheit |
 |---|---|---|
 | `ColecTm` | Abfragezeitpunkt | |
-| `PvPw` / `PvPwTotal` | Photovoltaikleistung | kW |
+| `PvPw` | Photovoltaikleistung | kW |
 | `ConsPw` | Bedarf Leistung | kW |
 | `GridPw` | Netzleistung | kW |
 | `GridStusCd` | Netzstatus (0 = Bezug, 1 = Einspeisung) | |
@@ -153,6 +153,7 @@ Eine bestimmte Version installieren:
 
 ## Changelog
 ### **WORK IN PROGRESS**
+* (Sebastian) **Breaking:** Datenpunkt `PvPwTotal` entfernt (war immer identisch mit `PvPw`); er wird beim Start automatisch gelöscht
 * (Sebastian) Batteriestatus 2 heißt jetzt „Bereit" statt „Geladen" (die Batterie ruht, sie ist nicht unbedingt voll)
 * (Sebastian) Wochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche
 

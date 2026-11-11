@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
-      "NEXT": {
+      "0.3.0": {
         "en": "Additional PV inverters (e.g. a second inverter via another adapter): new data points PvPwExt and PvPwTotal, PV counters include these inverters; consumption is then calculated from the energy balance, as the Q.HOME meters at the grid connection point",
         "de": "Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte PvPwExt und PvPwTotal, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst",
         "ru": "Дополнительные PV-инверторы (например, второй инвертор через другой адаптер): новые точки данных PvPwExt и PvPwTotal, счётчики PV учитывают эти инверторы; потребление тогда рассчитывается по энергетическому балансу, так как Q.HOME измеряет в точке подключения к сети",

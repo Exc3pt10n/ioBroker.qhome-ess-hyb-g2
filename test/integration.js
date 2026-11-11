@@ -103,6 +103,15 @@ tests.integration(path.join(__dirname, ".."), {
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
+        // Objekt aus einer älteren Version mit alter Statusbezeichnung
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.BtStusCd", {
+          type: "state",
+          common: {
+            name: "Batteriestatuscode", type: "number", role: "value", read: true, write: false,
+            states: { 0: "Entladen", 1: "Laden", 2: "Geladen" },
+          },
+          native: {},
+        });
         await harness.changeAdapterConfig("qhome-ess-hyb-g2", {
           native: { hostname: `127.0.0.1:${PORT + 1}`, batCapacity: 4, uptIntervall: 1 },
         });
@@ -118,6 +127,10 @@ tests.integration(path.join(__dirname, ".."), {
         // Heute neu begonnen, Gesamt läuft weiter, auch über den Verbindungsabbruch hinweg
         chai.expect(await get("day.PvGen")).to.be.greaterThan(0).and.lessThan(0.01);
         chai.expect(await get("total.PvGen")).to.be.greaterThan(1000).and.lessThan(1000.01);
+
+        // Bestehendes Objekt wurde auf die neue Bezeichnung aktualisiert
+        const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");
+        chai.expect(obj.common.states).to.deep.equal({ 0: "Entladen", 1: "Laden", 2: "Bereit" });
       });
     });
   },

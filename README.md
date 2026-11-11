@@ -55,7 +55,7 @@ Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 | `BtSoc` | Batterie Ladezustand | % |
 | `BtCap` | Batterie Kapazität (aktuell gespeicherte Energie) | kWh |
 | `BtPw` | Batterieleistung | kW |
-| `BtStusCd` | Batteriestatus (0 = Entladen, 1 = Laden, 2 = Geladen) | |
+| `BtStusCd` | Batteriestatus (0 = Entladen, 1 = Laden, 2 = Bereit, d. h. weder Laden noch Entladen) | |
 | `BtPwCharge` / `BtPwDisCharge` | Lade-/Entladeleistung Batterie | W |
 | `BtChargeIndicator` / `BtDisChargeIndicator` | 1, wenn geladen / entladen wird | |
 | `BtLast` | Restlaufzeit bis voll / leer | Min |
@@ -153,6 +153,7 @@ Eine bestimmte Version installieren:
 
 ## Changelog
 ### **WORK IN PROGRESS**
+* (Sebastian) Batteriestatus 2 heißt jetzt „Bereit" statt „Geladen" (die Batterie ruht, sie ist nicht unbedingt voll)
 * (Sebastian) Wochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche
 
 ### 0.1.0 (2026-11-10)

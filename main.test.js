@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { computeValues, transformTimestamp } = require("./lib/ess");
+const { STATES, computeValues, transformTimestamp } = require("./lib/ess");
 
 const base = {
   ColecTm: "20251110143005",
@@ -103,6 +103,10 @@ describe("computeValues mit echter Geräteantwort", () => {
     expect(v.BtPwDisCharge).to.equal(0);
     // Status 2: Restlaufzeit = Batterieinhalt / Verbrauch = 0,28 kWh / 0,8 kW = 21 min
     expect(v.BtLast).to.equal(21);
+  });
+
+  it("Status 2 heißt \"Bereit\" (Batterie ruht, z. B. bei 7 % SoC)", () => {
+    expect(STATES.BtStusCd.states[2]).to.equal("Bereit");
   });
 
   it("Energiebilanz: Verbrauch = Netzbezug + PV (Batterie ruht)", () => {

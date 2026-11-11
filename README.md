@@ -153,6 +153,8 @@ Eine bestimmte Version installieren:
 
 ## Changelog
 ### **WORK IN PROGRESS**
+
+### 0.2.0 (2026-11-11)
 * (Sebastian) **Breaking:** Datenpunkt `PvPwTotal` entfernt (war immer identisch mit `PvPw`); er wird beim Start automatisch gelöscht
 * (Sebastian) Batteriestatus 2 heißt jetzt „Bereit" statt „Geladen" (die Batterie ruht, sie ist nicht unbedingt voll)
 * (Sebastian) Wochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche

@@ -65,14 +65,15 @@ Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 
 ### Energiezähler
 
-Unter `counters.*` zählt der Adapter die Energie für **Tag, Monat, Quartal, Halbjahr,
-Jahr und Gesamt**. Grundlage sind die abgerufenen Leistungswerte, integriert über die
+Unter `counters.*` zählt der Adapter die Energie für **Tag, Woche, Monat, Quartal,
+Halbjahr, Jahr und Gesamt**. Grundlage sind die abgerufenen Leistungswerte, integriert über die
 tatsächlich vergangene Zeit. Lücken von mehr als 60 Sekunden, zum Beispiel weil das
 ESS nicht erreichbar war, werden nicht hochgerechnet.
 
 | Zeitraum | Kanal | Vorzeitraum |
 |---|---|---|
 | Tag | `counters.day` | `counters.day.previous` (gestern) |
+| Woche (Mo–So, KW nach ISO 8601) | `counters.week` | `counters.week.previous` (Vorwoche) |
 | Monat | `counters.month` | `counters.month.previous` (Vormonat) |
 | Quartal | `counters.quarter` | `counters.quarter.previous` (Vorquartal) |
 | Halbjahr | `counters.halfyear` | `counters.halfyear.previous` (Vorhalbjahr) |
@@ -92,7 +93,7 @@ Jeder Kanal enthält:
 | `SelfSupply` | Eigenversorgung (Verbrauch − Netzbezug) | kWh |
 | `Autarky` | Autarkie (Eigenversorgung / Verbrauch) | % |
 | `SelfConsRate` | Eigenverbrauchsquote ((PV − Einspeisung) / PV) | % |
-| `periodKey` | aktueller Zeitraum, z. B. `2026-11-10`, `2026-Q4`, `2026-H2` | |
+| `periodKey` | aktueller Zeitraum, z. B. `2026-11-10`, `2026-W46`, `2026-Q4`, `2026-H2` | |
 
 Der Zeitraumwechsel wird bei jedem Abruf erkannt, nicht über einen Zeitplan. Der
 bisherige Stand wandert dann nach `previous` und der Zähler beginnt bei 0. Das
@@ -152,6 +153,7 @@ Eine bestimmte Version installieren:
 
 ## Changelog
 ### **WORK IN PROGRESS**
+* (Sebastian) Wochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche
 
 ### 0.1.0 (2026-11-10)
 * (Sebastian) Energiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote; Vorzeitraum-Werte werden für History-Adapter mit Zeitstempel am Periodenende geschrieben

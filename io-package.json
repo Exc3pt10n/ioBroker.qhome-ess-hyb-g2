@@ -109,7 +109,8 @@
   "native": {
     "hostname": "qhome.local",
     "batCapacity": 4,
-    "uptIntervall": 1
+    "uptIntervall": 1,
+    "extPvSources": []
   },
   "objects": [],
   "instanceObjects": [

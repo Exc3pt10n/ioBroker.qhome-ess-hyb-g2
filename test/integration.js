@@ -103,14 +103,6 @@ tests.integration(path.join(__dirname, ".."), {
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
-        // Veralteter Datenpunkt aus einer früheren Version
-        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal", {
-          type: "state",
-          common: { name: "Photovoltaikleistung Gesamt", type: "number", role: "value", unit: "kW", read: true, write: false },
-          native: {},
-        });
-        await harness.states.setStateAsync("qhome-ess-hyb-g2.0.PvPwTotal", { val: 1.5, ack: true });
-
         // Objekt aus einer älteren Version mit alter Statusbezeichnung
         await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.BtStusCd", {
           type: "state",
@@ -140,9 +132,57 @@ tests.integration(path.join(__dirname, ".."), {
         const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");
         chai.expect(obj.common.states).to.deep.equal({ 0: "Entladen", 1: "Laden", 2: "Bereit" });
 
-        // Veralteter Datenpunkt wurde samt Wert gelöscht
-        chai.expect(await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal")).to.equal(null);
-        chai.expect(await harness.states.getStateAsync("qhome-ess-hyb-g2.0.PvPwTotal")).to.equal(null);
+        // PvPwTotal ist wieder ein regulärer Datenpunkt (PV Q.HOME + zusätzliche Erzeuger)
+        const total = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal");
+        chai.expect(total.common.name).to.equal("Photovoltaikleistung Gesamt");
+        chai.expect((await harness.states.getStateAsync("qhome-ess-hyb-g2.0.PvPwTotal")).val).to.equal(2);
+      });
+    });
+
+    suite("Zusätzlicher PV-Erzeuger", (getHarness) => {
+      let server;
+      before(async () => {
+        server = http.createServer((req, res) => {
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(ESS_RESPONSE));
+        });
+        await new Promise((r) => server.listen(PORT + 2, "127.0.0.1", r));
+      });
+      after(() => server && server.close());
+
+      it("liest den Fremd-Datenpunkt und berechnet PV-Summe und Verbrauch", async function () {
+        this.timeout(60000);
+        const harness = getHarness();
+        const extId = "sungrow-local.0.inverter.activePower";
+        await harness.objects.setObjectAsync(extId, {
+          type: "state",
+          common: { name: "AC-Wirkleistung", type: "number", role: "value.power", unit: "W", read: true, write: false },
+          native: {},
+        });
+        await harness.states.setStateAsync(extId, { val: 1500, ack: true });
+
+        await harness.changeAdapterConfig("qhome-ess-hyb-g2", {
+          native: {
+            hostname: `127.0.0.1:${PORT + 2}`,
+            batCapacity: 4,
+            uptIntervall: 1,
+            extPvSources: [{ enabled: true, name: "Sungrow", stateId: extId, unit: "W" }],
+          },
+        });
+        await harness.startAdapterAndWait();
+        await new Promise((r) => setTimeout(r, 2000));
+        // Änderung während des Betriebs wird über das Abo übernommen
+        await harness.states.setStateAsync(extId, { val: 2500, ack: true });
+        await new Promise((r) => setTimeout(r, 2500));
+        await harness.stopAdapter();
+
+        const get = async (id) => (await harness.states.getStateAsync(`qhome-ess-hyb-g2.0.${id}`)).val;
+        chai.expect(await get("PvPw")).to.equal(2);
+        chai.expect(await get("PvPwExt")).to.equal(2.5);
+        chai.expect(await get("PvPwTotal")).to.equal(4.5);
+        // Bilanz: 4,5 kW PV − 0,5 kW Einspeisung − 0,5 kW Laden = 3,5 kW
+        chai.expect(await get("ConsPw")).to.be.closeTo(3.5, 1e-9);
+        chai.expect(await get("counters.day.PvGen")).to.be.greaterThan(0);
       });
     });
   },

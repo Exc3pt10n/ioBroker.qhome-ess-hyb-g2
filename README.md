@@ -173,6 +173,8 @@ Eine bestimmte Version installieren:
 `https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/v0.1.0`
 
 ## Changelog
+### **WORK IN PROGRESS**
+
 ### 0.3.0 (2026-11-11)
 * (Sebastian) Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte `PvPwExt` und `PvPwTotal`, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst
 

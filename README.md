@@ -152,6 +152,8 @@ Eine bestimmte Version installieren:
 `https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/v0.1.0`
 
 ## Changelog
+### **WORK IN PROGRESS**
+
 ### 0.2.0 (2026-11-11)
 * (Sebastian) **Breaking:** Datenpunkt `PvPwTotal` entfernt (war immer identisch mit `PvPw`); er wird beim Start automatisch gelöscht
 * (Sebastian) Batteriestatus 2 heißt jetzt „Bereit" statt „Geladen" (die Batterie ruht, sie ist nicht unbedingt voll)

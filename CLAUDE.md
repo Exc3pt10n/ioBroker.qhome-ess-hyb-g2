@@ -20,6 +20,9 @@ npx release-script <patch|minor> --yes --noPush --branchPattern 'claude/*'
 git tag -d vX.Y.Z   # Tag nicht pushen, er wird nach dem Merge auf main gesetzt
 ```
 
+Das Skript fügt danach einen leeren Platzhalter `### **WORK IN PROGRESS**` in
+`README.md` ein; diesen als eigenen Commit mitnehmen.
+
 Das Skript braucht ein sauberes Arbeitsverzeichnis. Ist der Übersetzungsdienst nicht
 erreichbar, die News vorher selbst übersetzt unter `common.news.NEXT` in
 `io-package.json` eintragen (alle Sprachen wie bei den vorhandenen Einträgen); das

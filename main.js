@@ -2,7 +2,7 @@
 
 const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
-const { STATES, computeValues } = require("./lib/ess");
+const { STATES, OBSOLETE_STATES, computeValues } = require("./lib/ess");
 const { CounterEngine, PERIODS, QUANTITIES, counterObjects } = require("./lib/counters");
 
 /** Zählerstände spätestens alle x ms in die Datenpunkte schreiben */
@@ -47,10 +47,21 @@ class QHomeEssHybG2 extends utils.Adapter {
     this.intervalMs = Math.max(1, interval) * 1000;
     this.url = `http://${hostname}/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`;
 
+    await this.removeObsoleteStates();
     await this.createStates();
     await this.createCounterObjects();
     await this.restoreCounters();
     await this.poll();
+  }
+
+  /** Datenpunkte früherer Versionen löschen */
+  async removeObsoleteStates() {
+    for (const id of OBSOLETE_STATES) {
+      const obj = await this.getObjectAsync(id);
+      if (!obj) continue;
+      await this.delObjectAsync(id);
+      this.log.info(`Veralteten Datenpunkt ${id} gelöscht`);
+    }
   }
 
   async createStates() {

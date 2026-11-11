@@ -103,6 +103,14 @@ tests.integration(path.join(__dirname, ".."), {
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
+        // Veralteter Datenpunkt aus einer früheren Version
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal", {
+          type: "state",
+          common: { name: "Photovoltaikleistung Gesamt", type: "number", role: "value", unit: "kW", read: true, write: false },
+          native: {},
+        });
+        await harness.states.setStateAsync("qhome-ess-hyb-g2.0.PvPwTotal", { val: 1.5, ack: true });
+
         // Objekt aus einer älteren Version mit alter Statusbezeichnung
         await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.BtStusCd", {
           type: "state",
@@ -131,6 +139,10 @@ tests.integration(path.join(__dirname, ".."), {
         // Bestehendes Objekt wurde auf die neue Bezeichnung aktualisiert
         const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");
         chai.expect(obj.common.states).to.deep.equal({ 0: "Entladen", 1: "Laden", 2: "Bereit" });
+
+        // Veralteter Datenpunkt wurde samt Wert gelöscht
+        chai.expect(await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal")).to.equal(null);
+        chai.expect(await harness.states.getStateAsync("qhome-ess-hyb-g2.0.PvPwTotal")).to.equal(null);
       });
     });
   },

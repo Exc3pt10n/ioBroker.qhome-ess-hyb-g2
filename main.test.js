@@ -43,7 +43,8 @@ describe("computeValues", () => {
     expect(v.BtDisChargeIndicator).to.equal(0);
     // (4 - 2) kWh / 0.5 kW = 4 h = 240 min
     expect(v.BtLast).to.equal(240);
-    expect(v.PvPwTotal).to.equal(2);
+    expect(v.PvPw).to.equal(2);
+    expect(v).to.not.have.property("PvPwTotal");
     expect(v.PcsPw).to.equal(700);
   });
 

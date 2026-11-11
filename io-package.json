@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "news": {
-      "NEXT": {
+      "0.2.0": {
         "en": "Breaking: data point PvPwTotal removed (always identical to PvPw); it is deleted automatically on startup\nBattery status 2 is now called \"Ready\" instead of \"Charged\" (the battery is idle, not necessarily full)\nWeekly counter (Monday to Sunday, ISO 8601 calendar week) incl. previous week",
         "de": "Breaking: Datenpunkt PvPwTotal entfernt (war immer identisch mit PvPw); er wird beim Start automatisch gelöscht\nBatteriestatus 2 heißt jetzt „Bereit“ statt „Geladen“ (die Batterie ruht, sie ist nicht unbedingt voll)\nWochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche",
         "ru": "Критическое изменение: точка данных PvPwTotal удалена (всегда совпадала с PvPw); она удаляется автоматически при запуске\nСтатус батареи 2 теперь называется «Готова» вместо «Заряжена» (батарея в режиме ожидания, не обязательно полная)\nНедельный счётчик (с понедельника по воскресенье, календарная неделя по ISO 8601), включая предыдущую неделю",

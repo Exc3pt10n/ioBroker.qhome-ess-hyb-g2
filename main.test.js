@@ -44,7 +44,8 @@ describe("computeValues", () => {
     // (4 - 2) kWh / 0.5 kW = 4 h = 240 min
     expect(v.BtLast).to.equal(240);
     expect(v.PvPw).to.equal(2);
-    expect(v).to.not.have.property("PvPwTotal");
+    expect(v.PvPwExt).to.equal(0);
+    expect(v.PvPwTotal).to.equal(2);
     expect(v.PcsPw).to.equal(700);
   });
 
@@ -113,6 +114,50 @@ describe("computeValues mit echter Geräteantwort", () => {
   it("Energiebilanz: Verbrauch = Netzbezug + PV (Batterie ruht)", () => {
     const v = computeValues(real, 4);
     expect(v.GridPwPurchase + v.PvPw).to.be.closeTo(v.ConsPw, 1e-9);
+  });
+});
+
+describe("computeValues mit zusätzlichem PV-Erzeuger (Zähler am Hausanschluss)", () => {
+  // Q.HOME-PV 0,5 kW, Sungrow 2 kW, Haus braucht 1 kW, Batterie lädt 0,5 kW.
+  // Der Q.HOME sieht am Hausanschluss 1 kW Einspeisung und meldet ConsPw zu niedrig.
+  const status = {
+    ...base,
+    PvPw: "0.5",
+    GridStusCd: "1",
+    GridPw: "1.0",
+    BtStusCd: "1",
+    BtPw: "0.5",
+    ConsPw: "0",
+  };
+
+  it("summiert die PV-Leistung", () => {
+    const v = computeValues(status, 4, { extPvKw: 2, hasExt: true });
+    expect(v.PvPw).to.equal(0.5);
+    expect(v.PvPwExt).to.equal(2);
+    expect(v.PvPwTotal).to.equal(2.5);
+  });
+
+  it("berechnet den Verbrauch aus der Energiebilanz statt aus ConsPw", () => {
+    const v = computeValues(status, 4, { extPvKw: 2, hasExt: true });
+    // 2,5 kW PV − 1 kW Einspeisung − 0,5 kW Laden = 1 kW
+    expect(v.ConsPw).to.be.closeTo(1, 1e-9);
+  });
+
+  it("Bilanz stimmt auch bei Erzeuger = 0 mit dem Gerätewert überein", () => {
+    const real = { ...base, GridStusCd: "0", GridPw: 0.7, PvPw: 0.1, BtStusCd: "2", BtPw: 0, ConsPw: 0.8 };
+    const v = computeValues(real, 4, { extPvKw: 0, hasExt: true });
+    expect(v.ConsPw).to.be.closeTo(0.8, 1e-9);
+  });
+
+  it("ohne konfigurierte Erzeuger bleibt ConsPw der Gerätewert", () => {
+    const v = computeValues(status, 4);
+    expect(v.ConsPw).to.equal(0);
+    expect(v.PvPwTotal).to.equal(0.5);
+  });
+
+  it("negative oder ungültige Erzeugerleistung zählt als 0", () => {
+    expect(computeValues(status, 4, { extPvKw: -0.01, hasExt: true }).PvPwExt).to.equal(0);
+    expect(computeValues(status, 4, { extPvKw: NaN, hasExt: true }).PvPwExt).to.equal(0);
   });
 });
 

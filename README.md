@@ -40,14 +40,35 @@ Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 | ESS Hostname / IP-Adresse | Hostname oder IP des Speichers | `qhome.local` |
 | Speicherkapazität (kWh) | Nutzbare Kapazität der Batterie | `4` |
 | Abfrageintervall (Sekunden) | Abstand zwischen zwei Abrufen | `1` |
+| Zusätzliche PV-Erzeuger | Leistungs-Datenpunkte weiterer Wechselrichter, siehe unten | – |
+
+#### Zusätzliche PV-Erzeuger
+
+Weitere Wechselrichter, die über einen anderen Adapter in ioBroker eingebunden sind
+(z. B. `sungrow-local.0.inverter.activePower`), lassen sich in einer Tabelle eintragen:
+Datenpunkt, Einheit (W oder kW) und ein Name für das Log. Der Adapter abonniert die
+Datenpunkte und rechnet ihre Leistung bei jedem Abruf ein:
+
+- `PvPwExt` ist die Summe der zusätzlichen Erzeuger, `PvPwTotal` = `PvPw` + `PvPwExt`.
+- Die Zähler (`PvGen` usw.) verwenden `PvPwTotal`.
+- **Verbrauch:** Der Q.HOME misst am Hausanschluss und kennt nur seine eigene PV. Die
+  Leistung der zusätzlichen Erzeuger sieht er nur als geringeren Netzbezug bzw. höhere
+  Einspeisung, sein eigener Verbrauchswert ist dann zu niedrig. Sobald mindestens ein
+  Erzeuger eingetragen ist, berechnet der Adapter `ConsPw` deshalb aus der Energiebilanz:
+  `PvPwTotal` + Netzbezug − Einspeisung + Batterie-Entladung − Batterie-Ladung.
+- Werte, die älter als 60 Sekunden sind (z. B. nachts, wenn der Wechselrichter nicht
+  antwortet, oder wenn dessen Adapter ausfällt), zählen als 0. War der letzte Wert
+  größer als 0, steht eine Warnung im Log.
 
 ### Datenpunkte
 
 | ID | Beschreibung | Einheit |
 |---|---|---|
 | `ColecTm` | Abfragezeitpunkt | |
-| `PvPw` | Photovoltaikleistung | kW |
-| `ConsPw` | Bedarf Leistung | kW |
+| `PvPw` | Photovoltaikleistung des Q.HOME | kW |
+| `PvPwExt` | Photovoltaikleistung der zusätzlichen Erzeuger | kW |
+| `PvPwTotal` | Photovoltaikleistung gesamt (`PvPw` + `PvPwExt`) | kW |
+| `ConsPw` | Verbrauch (mit zusätzlichen Erzeugern aus der Energiebilanz) | kW |
 | `GridPw` | Netzleistung | kW |
 | `GridStusCd` | Netzstatus (0 = Bezug, 1 = Einspeisung) | |
 | `GridPwPurchase` / `GridPwPurchaseWb` | Netzbezug | kW / W |
@@ -84,7 +105,7 @@ Jeder Kanal enthält:
 
 | ID | Beschreibung | Einheit |
 |---|---|---|
-| `PvGen` | PV-Erzeugung | kWh |
+| `PvGen` | PV-Erzeugung (Q.HOME + zusätzliche Erzeuger) | kWh |
 | `GridPurchase` | Netzbezug | kWh |
 | `GridFeedIn` | Netzeinspeisung | kWh |
 | `BtCharged` | Batterie geladen | kWh |
@@ -153,6 +174,9 @@ Eine bestimmte Version installieren:
 
 ## Changelog
 ### **WORK IN PROGRESS**
+
+### 0.3.0 (2026-11-11)
+* (Sebastian) Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte `PvPwExt` und `PvPwTotal`, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst
 
 ### 0.2.0 (2026-11-11)
 * (Sebastian) **Breaking:** Datenpunkt `PvPwTotal` entfernt (war immer identisch mit `PvPw`); er wird beim Start automatisch gelöscht

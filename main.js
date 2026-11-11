@@ -4,6 +4,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const { STATES, OBSOLETE_STATES, computeValues } = require("./lib/ess");
 const { CounterEngine, PERIODS, QUANTITIES, counterObjects } = require("./lib/counters");
+const { ExternalSources, normalizeSources } = require("./lib/external");
 
 /** Zählerstände spätestens alle x ms in die Datenpunkte schreiben */
 const COUNTER_FLUSH_MS = 10 * 1000;
@@ -23,8 +24,10 @@ class QHomeEssHybG2 extends utils.Adapter {
     this.lastPollFailed = false;
     this.counters = new CounterEngine();
     this.lastFlush = 0;
+    this.external = new ExternalSources([]);
 
     this.on("ready", this.onReady.bind(this));
+    this.on("stateChange", this.onStateChange.bind(this));
     this.on("unload", this.onUnload.bind(this));
   }
 
@@ -47,11 +50,52 @@ class QHomeEssHybG2 extends utils.Adapter {
     this.intervalMs = Math.max(1, interval) * 1000;
     this.url = `http://${hostname}/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`;
 
+    await this.setupExternalSources();
     await this.removeObsoleteStates();
     await this.createStates();
     await this.createCounterObjects();
     await this.restoreCounters();
     await this.poll();
+  }
+
+  /** Zusätzliche PV-Erzeuger abonnieren und Startwerte einlesen */
+  async setupExternalSources() {
+    this.external = new ExternalSources(normalizeSources(this.config.extPvSources));
+    for (const src of this.external.sources) {
+      const obj = await this.getForeignObjectAsync(src.id);
+      if (!obj) {
+        this.log.warn(`Zusätzlicher PV-Erzeuger "${src.name}": Datenpunkt ${src.id} existiert nicht`);
+      }
+      await this.subscribeForeignStatesAsync(src.id);
+      this.external.update(src.id, await this.getForeignStateAsync(src.id));
+      this.log.info(
+        `Zusätzlicher PV-Erzeuger "${src.name}": ${src.id} (${src.factor === 1 ? "kW" : "W"})`
+      );
+    }
+  }
+
+  /**
+   * @param {string} id
+   * @param {ioBroker.State | null | undefined} state
+   */
+  onStateChange(id, state) {
+    this.external.update(id, state);
+  }
+
+  /** Summe der zusätzlichen Erzeuger in kW, mit Meldung veralteter Werte */
+  externalPvKw() {
+    if (!this.external.configured) return 0;
+    const { kw, newlyStale, recovered } = this.external.sumKw(Date.now());
+    for (const s of newlyStale) {
+      const msg = `Zusätzlicher PV-Erzeuger "${s.name}" liefert keine aktuellen Werte, zählt als 0 kW`;
+      // Nachts (letzter Wert 0) ist das normal, sonst ein Problem
+      if (s.lastKw > 0) this.log.warn(msg);
+      else this.log.debug(msg);
+    }
+    for (const name of recovered) {
+      this.log.debug(`Zusätzlicher PV-Erzeuger "${name}" liefert wieder Werte`);
+    }
+    return kw;
   }
 
   /** Datenpunkte früherer Versionen löschen */
@@ -158,7 +202,10 @@ class QHomeEssHybG2 extends utils.Adapter {
         throw new Error("Antwort enthält kein ESSRealtimeStatus");
       }
 
-      const values = computeValues(status, this.batCapacity);
+      const values = computeValues(status, this.batCapacity, {
+        extPvKw: this.externalPvKw(),
+        hasExt: this.external.configured,
+      });
       for (const [id, val] of Object.entries(values)) {
         await this.setStateAsync(id, val, true);
       }

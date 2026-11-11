@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Additional PV inverters (e.g. a second inverter via another adapter): new data points PvPwExt and PvPwTotal, PV counters include these inverters; consumption is then calculated from the energy balance, as the Q.HOME meters at the grid connection point",
+        "de": "Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte PvPwExt und PvPwTotal, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst",
+        "ru": "Дополнительные PV-инверторы (например, второй инвертор через другой адаптер): новые точки данных PvPwExt и PvPwTotal, счётчики PV учитывают эти инверторы; потребление тогда рассчитывается по энергетическому балансу, так как Q.HOME измеряет в точке подключения к сети",
+        "pt": "Inversores FV adicionais (p. ex. um segundo inversor através de outro adaptador): novos pontos de dados PvPwExt e PvPwTotal, os contadores FV incluem estes inversores; o consumo é então calculado a partir do balanço energético, pois o Q.HOME mede no ponto de ligação à rede",
+        "nl": "Extra PV-omvormers (bijv. een tweede omvormer via een andere adapter): nieuwe datapunten PvPwExt en PvPwTotal, PV-tellers inclusief deze omvormers; het verbruik wordt dan berekend uit de energiebalans, omdat de Q.HOME bij de netaansluiting meet",
+        "fr": "Onduleurs PV supplémentaires (p. ex. un second onduleur via un autre adaptateur) : nouveaux points de données PvPwExt et PvPwTotal, les compteurs PV incluent ces onduleurs ; la consommation est alors calculée à partir du bilan énergétique, car le Q.HOME mesure au point de raccordement au réseau",
+        "it": "Inverter FV aggiuntivi (ad es. un secondo inverter tramite un altro adattatore): nuovi punti dati PvPwExt e PvPwTotal, i contatori FV includono questi inverter; il consumo viene quindi calcolato dal bilancio energetico, poiché il Q.HOME misura al punto di connessione alla rete",
+        "es": "Inversores FV adicionales (p. ej. un segundo inversor mediante otro adaptador): nuevos puntos de datos PvPwExt y PvPwTotal, los contadores FV incluyen estos inversores; el consumo se calcula entonces a partir del balance energético, ya que el Q.HOME mide en el punto de conexión a la red",
+        "pl": "Dodatkowe falowniki PV (np. drugi falownik przez inny adapter): nowe punkty danych PvPwExt i PvPwTotal, liczniki PV uwzględniają te falowniki; zużycie jest wtedy obliczane z bilansu energii, ponieważ Q.HOME mierzy w punkcie przyłączenia do sieci",
+        "uk": "Додаткові PV-інвертори (наприклад, другий інвертор через інший адаптер): нові точки даних PvPwExt і PvPwTotal, лічильники PV враховують ці інвертори; споживання тоді розраховується з енергетичного балансу, оскільки Q.HOME вимірює в точці підключення до мережі",
+        "zh-cn": "附加光伏逆变器（例如通过其他适配器接入的第二台逆变器）：新增数据点 PvPwExt 和 PvPwTotal，光伏计数器包含这些逆变器；由于 Q.HOME 在电网接入点测量，此时用电量根据能量平衡计算"
+      },
       "0.2.0": {
         "en": "Breaking: data point PvPwTotal removed (always identical to PvPw); it is deleted automatically on startup\nBattery status 2 is now called \"Ready\" instead of \"Charged\" (the battery is idle, not necessarily full)\nWeekly counter (Monday to Sunday, ISO 8601 calendar week) incl. previous week",
         "de": "Breaking: Datenpunkt PvPwTotal entfernt (war immer identisch mit PvPw); er wird beim Start automatisch gelöscht\nBatteriestatus 2 heißt jetzt „Bereit“ statt „Geladen“ (die Batterie ruht, sie ist nicht unbedingt voll)\nWochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche",
@@ -109,7 +122,8 @@
   "native": {
     "hostname": "qhome.local",
     "batCapacity": 4,
-    "uptIntervall": 1
+    "uptIntervall": 1,
+    "extPvSources": []
   },
   "objects": [],
   "instanceObjects": [

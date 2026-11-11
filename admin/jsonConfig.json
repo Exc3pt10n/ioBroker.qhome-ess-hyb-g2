@@ -3,23 +3,131 @@
   "items": {
     "hostname": {
       "type": "text",
-      "label": { "en": "ESS hostname / IP address", "de": "ESS Hostname / IP-Adresse" },
-      "help": { "en": "e.g. qhome.local or 192.168.1.50", "de": "z. B. qhome.local oder 192.168.1.50" },
-      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+      "label": {
+        "en": "ESS hostname / IP address",
+        "de": "ESS Hostname / IP-Adresse"
+      },
+      "help": {
+        "en": "e.g. qhome.local or 192.168.1.50",
+        "de": "z. B. qhome.local oder 192.168.1.50"
+      },
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "batCapacity": {
       "type": "number",
-      "label": { "en": "Battery capacity (kWh)", "de": "Speicherkapazität (kWh)" },
+      "label": {
+        "en": "Battery capacity (kWh)",
+        "de": "Speicherkapazität (kWh)"
+      },
       "min": 0.1,
       "step": 0.1,
-      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
     },
     "uptIntervall": {
       "type": "number",
-      "label": { "en": "Polling interval (seconds)", "de": "Abfrageintervall (Sekunden)" },
+      "label": {
+        "en": "Polling interval (seconds)",
+        "de": "Abfrageintervall (Sekunden)"
+      },
       "min": 1,
       "step": 1,
-      "xs": 12, "sm": 12, "md": 6, "lg": 4, "xl": 4
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
+    },
+    "extPvHeader": {
+      "type": "header",
+      "size": 4,
+      "newLine": true,
+      "text": {
+        "en": "Additional PV inverters",
+        "de": "Zusätzliche PV-Erzeuger"
+      }
+    },
+    "extPvHelp": {
+      "type": "staticText",
+      "newLine": true,
+      "text": {
+        "en": "Power data points of other PV inverters (e.g. from another adapter). They are added to PvPwTotal and the PV counters. Because the Q.HOME meters at the grid connection point, consumption is then calculated from the energy balance. Values older than 60 s count as 0.",
+        "de": "Leistungs-Datenpunkte weiterer Wechselrichter (z. B. aus einem anderen Adapter). Sie fließen in PvPwTotal und die PV-Zähler ein. Da der Q.HOME am Hausanschluss misst, wird der Verbrauch dann aus der Energiebilanz berechnet. Werte älter als 60 s zählen als 0."
+      },
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "extPvSources": {
+      "type": "table",
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12,
+      "noDelete": false,
+      "items": [
+        {
+          "type": "checkbox",
+          "attr": "enabled",
+          "title": {
+            "en": "Active",
+            "de": "Aktiv"
+          },
+          "width": "10%",
+          "default": true
+        },
+        {
+          "type": "text",
+          "attr": "name",
+          "title": {
+            "en": "Name",
+            "de": "Name"
+          },
+          "width": "20%",
+          "default": ""
+        },
+        {
+          "type": "objectId",
+          "attr": "stateId",
+          "title": {
+            "en": "Power data point",
+            "de": "Leistungs-Datenpunkt"
+          },
+          "width": "50%",
+          "default": ""
+        },
+        {
+          "type": "select",
+          "attr": "unit",
+          "title": {
+            "en": "Unit",
+            "de": "Einheit"
+          },
+          "width": "20%",
+          "default": "W",
+          "options": [
+            {
+              "label": "W",
+              "value": "W"
+            },
+            {
+              "label": "kW",
+              "value": "kW"
+            }
+          ]
+        }
+      ]
     }
   }
 }

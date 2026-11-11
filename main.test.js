@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { computeValues, transformTimestamp } = require("./lib/ess");
+const { STATES, computeValues, transformTimestamp } = require("./lib/ess");
 
 const base = {
   ColecTm: "20251110143005",
@@ -67,3 +67,51 @@ describe("computeValues", () => {
     expect(v.BtLast).to.equal(0);
   });
 });
+
+describe("computeValues mit echter Geräteantwort", () => {
+  // Antwort eines Q.HOME+ ESS HYB-G2 vom 11.11.2026 (Zahlen teils als Zahl, teils als String)
+  const real = {
+    ColecTm: "20261111104056",
+    PowerOutletPw: "0",
+    GridPw: 0.7,
+    UnitPrice: 0.0,
+    ConsPw: 0.8,
+    BtSoc: 7,
+    PcsPw: 61.0,
+    AbsPcsPw: 0.1,
+    PvPw: 0.1,
+    GridStusCd: "0",
+    BtStusCd: "2",
+    BtPw: 0.0,
+    OperStusCd: "0",
+    EmsOpMode: "0",
+    RankPer: 0,
+    ErrorCnt: 0,
+  };
+
+  it("verarbeitet gemischte Zahl-/String-Werte", () => {
+    const v = computeValues(real, 4);
+    expect(v.GridStusCd).to.equal(0);
+    expect(v.BtStusCd).to.equal(2);
+    expect(v.GridPwPurchase).to.equal(0.7);
+    expect(v.GridPwPurchaseWb).to.be.closeTo(700, 1e-9);
+    expect(v.GridPwFeedIn).to.equal(0);
+    expect(v.PcsPw).to.equal(61); // W
+    expect(v.AbsPcsPw).to.equal(0.1); // kW
+    expect(v.BtCap).to.be.closeTo(0.28, 1e-12);
+    expect(v.BtPwCharge).to.equal(0);
+    expect(v.BtPwDisCharge).to.equal(0);
+    // Status 2: Restlaufzeit = Batterieinhalt / Verbrauch = 0,28 kWh / 0,8 kW = 21 min
+    expect(v.BtLast).to.equal(21);
+  });
+
+  it("Status 2 heißt \"Bereit\" (Batterie ruht, z. B. bei 7 % SoC)", () => {
+    expect(STATES.BtStusCd.states[2]).to.equal("Bereit");
+  });
+
+  it("Energiebilanz: Verbrauch = Netzbezug + PV (Batterie ruht)", () => {
+    const v = computeValues(real, 4);
+    expect(v.GridPwPurchase + v.PvPw).to.be.closeTo(v.ConsPw, 1e-9);
+  });
+});
+

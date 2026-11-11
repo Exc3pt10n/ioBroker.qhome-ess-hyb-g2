@@ -32,6 +32,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
+                  cache: npm
 
             - name: Install Dependencies
               run: npm ci
@@ -43,7 +44,7 @@ jobs:
             - name: Run unit tests
               run: npm run test:js
 
-    # Runs adapter tests on all supported node versions and OSes
+    # Runs adapter tests on all supported node versions (Linux only)
     adapter-tests:
         if: contains(github.event.head_commit.message, '[skip ci]') == false
 
@@ -52,8 +53,8 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node-version: [22.x]
-                os: [ubuntu-latest, windows-latest, macos-latest]
+                node-version: [20.x, 22.x, 24.x]
+                os: [ubuntu-latest]
 
         steps:
             - name: Checkout code
@@ -63,6 +64,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
+                  cache: npm
 
             - name: Install Dependencies
               run: npm ci

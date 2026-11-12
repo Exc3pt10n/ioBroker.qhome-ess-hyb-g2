@@ -1,7 +1,7 @@
 ![Logo](admin/qhome-ess-hyb-g2.png)
 # ioBroker.qhome-ess-hyb-g2
 
-[![Test and Release](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test-and-release.yml/badge.svg?branch=main)](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test-and-release.yml)
+[![Test](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/github/license/Exc3pt10n/ioBroker.qhome-ess-hyb-g2)](LICENSE)
 
 ## qhome-ess-hyb-g2 adapter for ioBroker

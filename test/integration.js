@@ -25,6 +25,9 @@ const ESS_RESPONSE = {
 };
 
 tests.integration(path.join(__dirname, ".."), {
+  // Stabile js-controller-Version statt der nächtlichen Entwicklungsversion ("dev"):
+  // entspricht den echten Installationen und bricht nicht bei fehlerhaften Nightly-Builds
+  controllerVersion: "latest",
   defineAdditionalTests({ suite }) {
     suite("Abruf vom (simulierten) ESS", (getHarness) => {
       let server;

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
+      "0.3.1": {
+        "en": "Security update: axios updated to 1.21.1 (fixes several known vulnerabilities in axios, form-data and follow-redirects)",
+        "de": "Sicherheitsupdate: axios auf 1.21.1 aktualisiert (behebt mehrere bekannte Sicherheitslücken in axios, form-data und follow-redirects)",
+        "ru": "Обновление безопасности: axios обновлён до 1.21.1 (устраняет несколько известных уязвимостей в axios, form-data и follow-redirects)",
+        "pt": "Atualização de segurança: axios atualizado para 1.21.1 (corrige várias vulnerabilidades conhecidas em axios, form-data e follow-redirects)",
+        "nl": "Beveiligingsupdate: axios bijgewerkt naar 1.21.1 (verhelpt meerdere bekende kwetsbaarheden in axios, form-data en follow-redirects)",
+        "fr": "Mise à jour de sécurité : axios mis à jour vers 1.21.1 (corrige plusieurs vulnérabilités connues dans axios, form-data et follow-redirects)",
+        "it": "Aggiornamento di sicurezza: axios aggiornato alla 1.21.1 (corregge diverse vulnerabilità note in axios, form-data e follow-redirects)",
+        "es": "Actualización de seguridad: axios actualizado a 1.21.1 (corrige varias vulnerabilidades conocidas en axios, form-data y follow-redirects)",
+        "pl": "Aktualizacja bezpieczeństwa: axios zaktualizowany do 1.21.1 (usuwa kilka znanych luk w axios, form-data i follow-redirects)",
+        "uk": "Оновлення безпеки: axios оновлено до 1.21.1 (усуває кілька відомих вразливостей в axios, form-data і follow-redirects)",
+        "zh-cn": "安全更新：axios 已更新至 1.21.1（修复 axios、form-data 和 follow-redirects 中的多个已知漏洞）"
+      },
       "0.3.0": {
         "en": "Additional PV inverters (e.g. a second inverter via another adapter): new data points PvPwExt and PvPwTotal, PV counters include these inverters; consumption is then calculated from the energy balance, as the Q.HOME meters at the grid connection point",
         "de": "Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte PvPwExt und PvPwTotal, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst",

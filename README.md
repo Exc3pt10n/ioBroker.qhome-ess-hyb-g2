@@ -179,6 +179,9 @@ Den Branch `release` gibt es erst nach dem ersten Release über den zentralen Wo
 
 ## Changelog
 
+### 0.3.1 (2026-11-14)
+* (Sebastian) Sicherheitsupdate: axios auf 1.21.1 aktualisiert (behebt mehrere bekannte Sicherheitslücken in axios, form-data und follow-redirects)
+
 ### 0.3.0 (2026-11-11)
 * (Sebastian) Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte `PvPwExt` und `PvPwTotal`, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst
 

@@ -24,10 +24,9 @@ der `release-guard` im Pull Request.
 - **Pull Requests:** Lint, Tests auf Node 22 und 24, Integrationstest (echte js-controller-Instanz, stabile
   Version), Installationstest wie `iobroker url` (nur ausgelieferte Dateien), `npm audit --omit=dev
   --audit-level=high` und `release-guard` (Versionsregeln). Ändert ein PR ausgelieferte Dateien
-  (`admin/`, `lib/`, `widgets/`, `main.js`, `io-package.json`, Laufzeit-Felder in `package.json` wie
-  `dependencies` oder `engines`, Laufzeit-Pakete im Lockfile), braucht er einen Versionssprung.
-  Da `package.json` kein `files`-Feld hat, sind `admin/ lib/ widgets/` in `test.yml` über
-  `extra-runtime-paths` angegeben.
+  (alles aus `files` in `package.json`: `admin/`, `lib/`, `main.js`, `io-package.json`; dazu
+  Laufzeit-Felder in `package.json` wie `dependencies` oder `engines` und Laufzeit-Pakete im Lockfile),
+  braucht er einen Versionssprung. Unit-Tests liegen deshalb in `test/unit/`, nicht in `lib/`.
 - **Nach dem Merge auf `main`:** Sind alle Prüfungen grün und fehlt der Tag `vX.Y.Z` zur Version in
   `package.json`, setzt der Release-Job den annotierten Tag, legt ein GitHub-Release mit den Notes aus dem
   README an und spult den Branch `release` vor.

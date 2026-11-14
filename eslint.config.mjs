@@ -3,7 +3,7 @@ import globals from "globals";
 
 export default [
   {
-    ignores: ["node_modules/**", "widgets/**", "admin/**", "gulpfile.js", "lib/tools.js"],
+    ignores: ["node_modules/**", "admin/**"],
   },
   js.configs.recommended,
   {

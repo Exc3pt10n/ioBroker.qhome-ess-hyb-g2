@@ -1,6 +1,6 @@
 {
   "name": "iobroker.qhome-ess-hyb-g2",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Q.HOME+ ESS HYB-G2",
   "author": {
     "name": "Sebastian",
@@ -23,12 +23,9 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.3.2",
-    "axios": "^1.12.2"
+    "axios": "^1.21.1"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^5.2.1",
-    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
-    "@alcalzone/release-script-plugin-license": "^5.2.2",
     "@eslint/js": "^9.37.0",
     "@iobroker/testing": "^5.1.1",
     "@types/chai": "^5.2.2",
@@ -55,8 +52,7 @@
     "test:package": "mocha test/package --exit",
     "test:integration": "mocha test/integration --exit",
     "test": "npm run test:js && npm run test:package",
-    "lint": "eslint .",
-    "release": "release-script"
+    "lint": "eslint ."
   },
   "bugs": {
     "url": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/issues"

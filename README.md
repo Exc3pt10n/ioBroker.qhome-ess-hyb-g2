@@ -157,23 +157,30 @@ kopieren und dort `cd /opt/iobroker && npm i /pfad/zur/datei.tgz` ausführen, da
 
 ### Release erstellen
 
-1. Bei jeder Änderung, die man im Betrieb bemerkt, unter `### **WORK IN PROGRESS**` im
-   Changelog eine Zeile `* (Autor) Beschreibung` ergänzen.
-2. Auf `main` mit sauberem Arbeitsverzeichnis ausführen:
-   ```bash
-   npm run release patch   # nur Fehlerbehebungen, z. B. 0.1.0 → 0.1.1
-   npm run release minor   # neue Funktionen, z. B. 0.1.1 → 0.2.0
-   ```
-   Das Skript erhöht die Version in `package.json` und `io-package.json`, macht aus dem
-   Platzhalter einen Versionseintrag mit Datum, übersetzt die News für `io-package.json`,
-   committet, setzt den Tag `vX.Y.Z` und pusht beides. Mit `--dry` lässt es sich
-   vorher gefahrlos ausprobieren.
+Releases entstehen automatisch über den zentralen Workflow
+[`Exc3pt10n/ioBroker-workflows`](https://github.com/Exc3pt10n/ioBroker-workflows):
 
-Eine bestimmte Version installieren:
-`https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/v0.1.0`
+1. Ein Pull Request, der ausgelieferte Dateien ändert, erhöht die Version **einmal**:
+   `version` in `package.json`/`package-lock.json`, `common.version` und ein neuer Eintrag oben
+   in `common.news` (alle 11 Sprachen) in `io-package.json` sowie ein Changelog-Abschnitt
+   `### X.Y.Z (JJJJ-MM-TT)` hier im README. Der Check `release-guard` prüft das im Pull Request.
+2. Nach dem Merge auf `main` setzt der Release-Job den Tag `vX.Y.Z`, legt ein GitHub-Release mit
+   den Notes aus dem Changelog an und spult den Branch `release` vor.
+
+Installations-URLs:
+
+| Zweck | URL |
+|---|---|
+| stabil (letztes Release) | `https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/release` |
+| bestimmte Version | `https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/vX.Y.Z` |
+| Entwicklungsstand | `https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/tarball/main` |
+
+Den Branch `release` gibt es erst nach dem ersten Release über den zentralen Workflow.
 
 ## Changelog
-### **WORK IN PROGRESS**
+
+### 0.3.1 (2026-11-14)
+* (Sebastian) Sicherheitsupdate: axios auf 1.21.1 aktualisiert (behebt mehrere bekannte Sicherheitslücken in axios, form-data und follow-redirects)
 
 ### 0.3.0 (2026-11-11)
 * (Sebastian) Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte `PvPwExt` und `PvPwTotal`, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst

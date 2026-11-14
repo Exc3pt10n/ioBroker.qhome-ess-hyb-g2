@@ -28,5 +28,3 @@ jobs:
             default-branch: main
             build: false
             prebuilt-package: false
-            # Kein "files" in package.json: ausgelieferte Verzeichnisse für release-guard
-            extra-runtime-paths: 'admin/ lib/ widgets/'

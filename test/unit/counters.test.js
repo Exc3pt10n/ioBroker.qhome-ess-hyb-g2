@@ -8,7 +8,7 @@ const {
   derive,
   counterObjects,
   MAX_GAP_MS,
-} = require("./counters");
+} = require("../../lib/counters");
 
 /** Messwerte wie aus computeValues() */
 const sample = (o = {}) => ({

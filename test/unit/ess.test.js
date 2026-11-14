@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { STATES, computeValues, transformTimestamp } = require("./lib/ess");
+const { STATES, computeValues, transformTimestamp } = require("../../lib/ess");
 
 const base = {
   ColecTm: "20251110143005",

@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { ExternalSources, normalizeSources, STALE_MS } = require("./external");
+const { ExternalSources, normalizeSources, STALE_MS } = require("../../lib/external");
 
 describe("normalizeSources", () => {
   it("übernimmt aktive Zeilen, rechnet W in kW um und entfernt Doppelte/Leere", () => {

@@ -31,7 +31,7 @@ iobroker add qhome-ess-hyb-g2
 
 Updates werden auf dieselbe Weise installiert, Instanz und Einstellungen bleiben erhalten.
 
-Voraussetzungen: js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
+Voraussetzungen: Node.js ≥ 22, js-controller ≥ 5.0.19, Admin ≥ 6.13.16.
 
 ### Konfiguration
 
@@ -178,6 +178,10 @@ Installations-URLs:
 Den Branch `release` gibt es erst nach dem ersten Release über den zentralen Workflow.
 
 ## Changelog
+
+### 0.4.0 (2026-11-14)
+* (Sebastian) **Breaking:** Node.js 22 oder neuer wird vorausgesetzt
+* (Sebastian) Das Paket enthält nur noch die zur Laufzeit benötigten Dateien; ungenutzte Überbleibsel der Vorlage (Beispiel-VIS-Widgets, gulp-Übersetzungsskript) entfernt
 
 ### 0.3.1 (2026-11-14)
 * (Sebastian) Sicherheitsupdate: axios auf 1.21.1 aktualisiert (behebt mehrere bekannte Sicherheitslücken in axios, form-data und follow-redirects)

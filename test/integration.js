@@ -56,6 +56,11 @@ tests.integration(path.join(__dirname, ".."), {
         chai.expect((await get("GridPwFeedInWb")).val).to.equal(500);
         chai.expect((await get("BtLast")).val).to.equal(240);
         chai.expect((await get("BtStusCd")).ack).to.equal(true);
+        // Abfragezeitpunkt als Zeitstempel (ms, Rolle date)
+        chai.expect((await get("ColecTm")).val).to.equal(new Date(2025, 10, 10, 14, 30, 5).getTime());
+        const colecObj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.ColecTm");
+        chai.expect(colecObj.common.type).to.equal("number");
+        chai.expect(colecObj.common.role).to.equal("date");
 
         // Zähler: Zeitraum gesetzt, Gesamt-Datenpunkt ohne Vorzeitraum
         chai.expect((await get("counters.year.periodKey")).val).to.equal(String(new Date().getFullYear()));

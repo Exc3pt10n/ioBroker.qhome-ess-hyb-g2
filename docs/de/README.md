@@ -52,7 +52,7 @@ Datenpunkte und rechnet ihre Leistung bei jedem Abruf ein:
 
 | ID | Beschreibung | Einheit |
 |---|---|---|
-| `ColecTm` | Abfragezeitpunkt | |
+| `ColecTm` | Abfragezeitpunkt (Zeitstempel in ms, Rolle `date`) | ms |
 | `PvPw` | Photovoltaikleistung des Q.HOME | kW |
 | `PvPwExt` | Photovoltaikleistung der zusätzlichen Erzeuger | kW |
 | `PvPwTotal` | Photovoltaikleistung gesamt (`PvPw` + `PvPwExt`) | kW |

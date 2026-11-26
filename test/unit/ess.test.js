@@ -22,12 +22,15 @@ const base = {
 };
 
 describe("transformTimestamp", () => {
-  it("wandelt YYYYMMDDhhmmss in ein lokales Datum um", () => {
-    const expected = new Date(2025, 10, 10, 14, 30, 5).toLocaleString();
+  it("wandelt YYYYMMDDhhmmss (Ortszeit) in Millisekunden um", () => {
+    const expected = new Date(2025, 10, 10, 14, 30, 5).getTime();
     expect(transformTimestamp("20251110143005")).to.equal(expected);
+    expect(transformTimestamp(20251110143005)).to.equal(expected);
   });
-  it("gibt unbekannte Formate unverändert zurück", () => {
-    expect(transformTimestamp("abc")).to.equal("abc");
+  it("liefert null für unbekannte oder fehlende Werte", () => {
+    expect(transformTimestamp("abc")).to.equal(null);
+    expect(transformTimestamp(undefined)).to.equal(null);
+    expect(transformTimestamp("20251399999999")).to.be.a("number"); // Date rechnet über, bleibt eine Zahl
   });
 });
 
@@ -93,6 +96,7 @@ describe("computeValues mit echter Geräteantwort", () => {
 
   it("verarbeitet gemischte Zahl-/String-Werte", () => {
     const v = computeValues(real, 4);
+    expect(v.ColecTm).to.equal(new Date(2026, 10, 11, 10, 40, 56).getTime());
     expect(v.GridStusCd).to.equal(0);
     expect(v.BtStusCd).to.equal(2);
     expect(v.GridPwPurchase).to.equal(0.7);

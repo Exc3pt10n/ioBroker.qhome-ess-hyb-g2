@@ -53,7 +53,7 @@ adds their power on every request:
 
 | ID | Description | Unit |
 |---|---|---|
-| `ColecTm` | Collection time of the values | |
+| `ColecTm` | Collection time of the values (timestamp in ms, role `date`) | ms |
 | `PvPw` | PV power of the Q.HOME | kW |
 | `PvPwExt` | PV power of the additional inverters | kW |
 | `PvPwTotal` | Total PV power (`PvPw` + `PvPwExt`) | kW |
@@ -142,6 +142,8 @@ See [DEVELOPMENT.md](DEVELOPMENT.md).
 - (Exc3pt10n) **Breaking:** distributed via npm from now on; installation from GitHub is no longer supported. Install
   the adapter from npm (see [Installation](#installation)); existing instances and their settings are kept.
 - (Exc3pt10n) **Breaking:** requires js-controller ≥ 6.0.11 and Admin ≥ 7.6.20.
+- (Exc3pt10n) **Breaking:** `ColecTm` is now a timestamp in milliseconds (type number, role `date`) instead of a
+  locale-dependent text; visualizations can format it themselves.
 - (Exc3pt10n) Object names, status texts and log messages in English (object names with German translation); the
   settings page is translated into all ioBroker languages.
 - (Exc3pt10n) Power states use the role `value.power`, the stored battery energy `value.energy`.

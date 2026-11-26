@@ -20,9 +20,8 @@ A German description is available in [docs/de/README.md](docs/de/README.md).
 
 ## Installation
 
-Install the adapter from the ioBroker Admin interface (*Adapters*) and create an instance. As long as it is not
-listed in the ioBroker repository, use *Adapters* → *Install from custom URL* → tab *npm* with the package name
-`iobroker.qhome-ess-hyb-g2`.
+Install the adapter like any other adapter from the ioBroker Admin interface (*Adapters*), then create an instance and
+enter the hostname or IP address of the storage system.
 
 Requirements: Node.js ≥ 22, js-controller ≥ 6.0.11, Admin ≥ 7.6.20.
 

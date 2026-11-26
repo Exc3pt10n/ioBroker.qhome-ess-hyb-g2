@@ -1,87 +1,22 @@
 {
   "common": {
     "name": "qhome-ess-hyb-g2",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "news": {
-      "0.4.0": {
-        "en": "Breaking: Node.js 22 or newer is required\nThe package now only contains the files needed at runtime; unused template leftovers (example VIS widgets, gulp translation script) removed",
-        "de": "Breaking: Node.js 22 oder neuer wird vorausgesetzt\nDas Paket enthält nur noch die zur Laufzeit benötigten Dateien; ungenutzte Überbleibsel der Vorlage (Beispiel-VIS-Widgets, gulp-Übersetzungsskript) entfernt",
-        "ru": "Критическое изменение: требуется Node.js 22 или новее\nПакет теперь содержит только файлы, нужные во время работы; неиспользуемые остатки шаблона (примерные виджеты VIS, скрипт перевода gulp) удалены",
-        "pt": "Alteração incompatível: é necessário Node.js 22 ou mais recente\nO pacote contém agora apenas os ficheiros necessários em execução; restos não utilizados do modelo (widgets VIS de exemplo, script de tradução gulp) removidos",
-        "nl": "Breaking: Node.js 22 of nieuwer is vereist\nHet pakket bevat nu alleen de bestanden die tijdens het draaien nodig zijn; ongebruikte resten van de sjabloon (voorbeeld-VIS-widgets, gulp-vertaalscript) verwijderd",
-        "fr": "Changement incompatible : Node.js 22 ou plus récent est requis\nLe paquet ne contient plus que les fichiers nécessaires à l'exécution ; restes inutilisés du modèle (widgets VIS d'exemple, script de traduction gulp) supprimés",
-        "it": "Modifica incompatibile: è richiesto Node.js 22 o successivo\nIl pacchetto contiene ora solo i file necessari in esecuzione; rimossi i residui inutilizzati del modello (widget VIS di esempio, script di traduzione gulp)",
-        "es": "Cambio incompatible: se requiere Node.js 22 o posterior\nEl paquete ahora solo contiene los archivos necesarios en tiempo de ejecución; eliminados restos no utilizados de la plantilla (widgets VIS de ejemplo, script de traducción gulp)",
-        "pl": "Zmiana niezgodna wstecz: wymagany jest Node.js 22 lub nowszy\nPakiet zawiera teraz tylko pliki potrzebne w czasie działania; usunięto nieużywane pozostałości szablonu (przykładowe widżety VIS, skrypt tłumaczeń gulp)",
-        "uk": "Несумісна зміна: потрібен Node.js 22 або новіший\nПакет тепер містить лише файли, потрібні під час роботи; видалено невикористані залишки шаблону (приклади віджетів VIS, скрипт перекладу gulp)",
-        "zh-cn": "不兼容更改：需要 Node.js 22 或更高版本\n软件包现在只包含运行时所需的文件；已删除模板中未使用的残留内容（示例 VIS 小部件、gulp 翻译脚本）"
-      },
-      "0.3.1": {
-        "en": "Security update: axios updated to 1.21.1 (fixes several known vulnerabilities in axios, form-data and follow-redirects)",
-        "de": "Sicherheitsupdate: axios auf 1.21.1 aktualisiert (behebt mehrere bekannte Sicherheitslücken in axios, form-data und follow-redirects)",
-        "ru": "Обновление безопасности: axios обновлён до 1.21.1 (устраняет несколько известных уязвимостей в axios, form-data и follow-redirects)",
-        "pt": "Atualização de segurança: axios atualizado para 1.21.1 (corrige várias vulnerabilidades conhecidas em axios, form-data e follow-redirects)",
-        "nl": "Beveiligingsupdate: axios bijgewerkt naar 1.21.1 (verhelpt meerdere bekende kwetsbaarheden in axios, form-data en follow-redirects)",
-        "fr": "Mise à jour de sécurité : axios mis à jour vers 1.21.1 (corrige plusieurs vulnérabilités connues dans axios, form-data et follow-redirects)",
-        "it": "Aggiornamento di sicurezza: axios aggiornato alla 1.21.1 (corregge diverse vulnerabilità note in axios, form-data e follow-redirects)",
-        "es": "Actualización de seguridad: axios actualizado a 1.21.1 (corrige varias vulnerabilidades conocidas en axios, form-data y follow-redirects)",
-        "pl": "Aktualizacja bezpieczeństwa: axios zaktualizowany do 1.21.1 (usuwa kilka znanych luk w axios, form-data i follow-redirects)",
-        "uk": "Оновлення безпеки: axios оновлено до 1.21.1 (усуває кілька відомих вразливостей в axios, form-data і follow-redirects)",
-        "zh-cn": "安全更新：axios 已更新至 1.21.1（修复 axios、form-data 和 follow-redirects 中的多个已知漏洞）"
-      },
-      "0.3.0": {
-        "en": "Additional PV inverters (e.g. a second inverter via another adapter): new data points PvPwExt and PvPwTotal, PV counters include these inverters; consumption is then calculated from the energy balance, as the Q.HOME meters at the grid connection point",
-        "de": "Zusätzliche PV-Erzeuger (z. B. ein zweiter Wechselrichter über einen anderen Adapter): neue Datenpunkte PvPwExt und PvPwTotal, PV-Zähler inkl. dieser Erzeuger; der Verbrauch wird dann aus der Energiebilanz berechnet, da der Q.HOME am Hausanschluss misst",
-        "ru": "Дополнительные PV-инверторы (например, второй инвертор через другой адаптер): новые точки данных PvPwExt и PvPwTotal, счётчики PV учитывают эти инверторы; потребление тогда рассчитывается по энергетическому балансу, так как Q.HOME измеряет в точке подключения к сети",
-        "pt": "Inversores FV adicionais (p. ex. um segundo inversor através de outro adaptador): novos pontos de dados PvPwExt e PvPwTotal, os contadores FV incluem estes inversores; o consumo é então calculado a partir do balanço energético, pois o Q.HOME mede no ponto de ligação à rede",
-        "nl": "Extra PV-omvormers (bijv. een tweede omvormer via een andere adapter): nieuwe datapunten PvPwExt en PvPwTotal, PV-tellers inclusief deze omvormers; het verbruik wordt dan berekend uit de energiebalans, omdat de Q.HOME bij de netaansluiting meet",
-        "fr": "Onduleurs PV supplémentaires (p. ex. un second onduleur via un autre adaptateur) : nouveaux points de données PvPwExt et PvPwTotal, les compteurs PV incluent ces onduleurs ; la consommation est alors calculée à partir du bilan énergétique, car le Q.HOME mesure au point de raccordement au réseau",
-        "it": "Inverter FV aggiuntivi (ad es. un secondo inverter tramite un altro adattatore): nuovi punti dati PvPwExt e PvPwTotal, i contatori FV includono questi inverter; il consumo viene quindi calcolato dal bilancio energetico, poiché il Q.HOME misura al punto di connessione alla rete",
-        "es": "Inversores FV adicionales (p. ej. un segundo inversor mediante otro adaptador): nuevos puntos de datos PvPwExt y PvPwTotal, los contadores FV incluyen estos inversores; el consumo se calcula entonces a partir del balance energético, ya que el Q.HOME mide en el punto de conexión a la red",
-        "pl": "Dodatkowe falowniki PV (np. drugi falownik przez inny adapter): nowe punkty danych PvPwExt i PvPwTotal, liczniki PV uwzględniają te falowniki; zużycie jest wtedy obliczane z bilansu energii, ponieważ Q.HOME mierzy w punkcie przyłączenia do sieci",
-        "uk": "Додаткові PV-інвертори (наприклад, другий інвертор через інший адаптер): нові точки даних PvPwExt і PvPwTotal, лічильники PV враховують ці інвертори; споживання тоді розраховується з енергетичного балансу, оскільки Q.HOME вимірює в точці підключення до мережі",
-        "zh-cn": "附加光伏逆变器（例如通过其他适配器接入的第二台逆变器）：新增数据点 PvPwExt 和 PvPwTotal，光伏计数器包含这些逆变器；由于 Q.HOME 在电网接入点测量，此时用电量根据能量平衡计算"
-      },
-      "0.2.0": {
-        "en": "Breaking: data point PvPwTotal removed (always identical to PvPw); it is deleted automatically on startup\nBattery status 2 is now called \"Ready\" instead of \"Charged\" (the battery is idle, not necessarily full)\nWeekly counter (Monday to Sunday, ISO 8601 calendar week) incl. previous week",
-        "de": "Breaking: Datenpunkt PvPwTotal entfernt (war immer identisch mit PvPw); er wird beim Start automatisch gelöscht\nBatteriestatus 2 heißt jetzt „Bereit“ statt „Geladen“ (die Batterie ruht, sie ist nicht unbedingt voll)\nWochenzähler (Montag bis Sonntag, Kalenderwoche nach ISO 8601) inkl. Vorwoche",
-        "ru": "Критическое изменение: точка данных PvPwTotal удалена (всегда совпадала с PvPw); она удаляется автоматически при запуске\nСтатус батареи 2 теперь называется «Готова» вместо «Заряжена» (батарея в режиме ожидания, не обязательно полная)\nНедельный счётчик (с понедельника по воскресенье, календарная неделя по ISO 8601), включая предыдущую неделю",
-        "pt": "Alteração incompatível: ponto de dados PvPwTotal removido (sempre idêntico a PvPw); é eliminado automaticamente no arranque\nO estado da bateria 2 chama-se agora \"Pronta\" em vez de \"Carregada\" (a bateria está em repouso, não necessariamente cheia)\nContador semanal (segunda a domingo, semana ISO 8601) incl. semana anterior",
-        "nl": "Breaking: datapunt PvPwTotal verwijderd (altijd gelijk aan PvPw); het wordt bij het starten automatisch verwijderd\nBatterijstatus 2 heet nu \"Gereed\" in plaats van \"Geladen\" (de batterij is in rust, niet per se vol)\nWeekteller (maandag tot zondag, ISO 8601-kalenderweek) incl. vorige week",
-        "fr": "Changement incompatible : point de données PvPwTotal supprimé (toujours identique à PvPw) ; il est supprimé automatiquement au démarrage\nL'état de batterie 2 s'appelle désormais « Prête » au lieu de « Chargée » (la batterie est au repos, pas forcément pleine)\nCompteur hebdomadaire (lundi à dimanche, semaine ISO 8601) y compris la semaine précédente",
-        "it": "Modifica incompatibile: punto dati PvPwTotal rimosso (sempre identico a PvPw); viene eliminato automaticamente all'avvio\nLo stato batteria 2 ora si chiama \"Pronta\" invece di \"Carica\" (la batteria è a riposo, non necessariamente piena)\nContatore settimanale (da lunedì a domenica, settimana ISO 8601) incl. settimana precedente",
-        "es": "Cambio incompatible: punto de datos PvPwTotal eliminado (siempre idéntico a PvPw); se elimina automáticamente al iniciar\nEl estado de batería 2 ahora se llama \"Lista\" en lugar de \"Cargada\" (la batería está en reposo, no necesariamente llena)\nContador semanal (lunes a domingo, semana ISO 8601) incl. semana anterior",
-        "pl": "Zmiana niezgodna wstecz: usunięto punkt danych PvPwTotal (zawsze identyczny z PvPw); jest usuwany automatycznie przy uruchomieniu\nStatus baterii 2 nazywa się teraz „Gotowa” zamiast „Naładowana” (bateria spoczywa, niekoniecznie jest pełna)\nLicznik tygodniowy (od poniedziałku do niedzieli, tydzień ISO 8601) wraz z poprzednim tygodniem",
-        "uk": "Несумісна зміна: точку даних PvPwTotal видалено (завжди збігалася з PvPw); вона видаляється автоматично під час запуску\nСтатус батареї 2 тепер називається «Готова» замість «Заряджена» (батарея в режимі очікування, не обов’язково повна)\nТижневий лічильник (з понеділка по неділю, календарний тиждень за ISO 8601), включно з попереднім тижнем",
-        "zh-cn": "不兼容更改：已删除数据点 PvPwTotal（始终与 PvPw 相同）；启动时会自动删除\n电池状态 2 现在称为“就绪”而不是“已充满”（电池处于静止状态，不一定充满）\n周计数器（周一至周日，ISO 8601 日历周），包括上一周"
-      },
-      "0.1.0": {
-        "en": "Adapter is now operational: real-time values of the ESS (functionality of the former JavaScript script) and new admin UI\nEnergy counters for day, month, quarter, half-year, year and total incl. previous period, autarky and self-consumption rate",
-        "de": "Adapter lauffähig: Echtzeitwerte des ESS (Funktionsumfang des bisherigen JavaScript-Skripts) und neue Admin-Oberfläche\nEnergiezähler für Tag, Monat, Quartal, Halbjahr, Jahr und Gesamt inkl. Vorzeitraum, Autarkie und Eigenverbrauchsquote",
-        "ru": "Адаптер работоспособен: данные ESS в реальном времени (функциональность прежнего JavaScript-скрипта) и новый интерфейс настроек\nСчётчики энергии за день, месяц, квартал, полугодие, год и всего, включая предыдущий период, автономность и долю собственного потребления",
-        "pt": "Adaptador operacional: valores em tempo real do ESS (funcionalidade do antigo script JavaScript) e nova interface de administração\nContadores de energia por dia, mês, trimestre, semestre, ano e total, incl. período anterior, autarquia e taxa de autoconsumo",
-        "nl": "Adapter werkt nu: realtime waarden van de ESS (functionaliteit van het vroegere JavaScript-script) en nieuwe beheerinterface\nEnergietellers per dag, maand, kwartaal, halfjaar, jaar en totaal incl. vorige periode, autarkie en eigenverbruiksquote",
-        "fr": "L'adaptateur est opérationnel : valeurs en temps réel de l'ESS (fonctionnalités de l'ancien script JavaScript) et nouvelle interface d'administration\nCompteurs d'énergie par jour, mois, trimestre, semestre, année et total, y compris la période précédente, l'autarcie et le taux d'autoconsommation",
-        "it": "Adattatore funzionante: valori in tempo reale dell'ESS (funzionalità del precedente script JavaScript) e nuova interfaccia di amministrazione\nContatori di energia per giorno, mese, trimestre, semestre, anno e totale, incl. periodo precedente, autarchia e quota di autoconsumo",
-        "es": "Adaptador operativo: valores en tiempo real del ESS (funcionalidad del antiguo script JavaScript) y nueva interfaz de administración\nContadores de energía por día, mes, trimestre, semestre, año y total, incl. período anterior, autarquía y tasa de autoconsumo",
-        "pl": "Adapter działa: wartości ESS w czasie rzeczywistym (funkcjonalność dotychczasowego skryptu JavaScript) i nowy interfejs administracyjny\nLiczniki energii za dzień, miesiąc, kwartał, półrocze, rok i łącznie, wraz z poprzednim okresem, autarkią i wskaźnikiem autokonsumpcji",
-        "uk": "Адаптер працює: дані ESS у реальному часі (функціональність попереднього JavaScript-скрипта) та новий інтерфейс налаштувань\nЛічильники енергії за день, місяць, квартал, півріччя, рік і загалом, включно з попереднім періодом, автономністю та часткою власного споживання",
-        "zh-cn": "适配器已可运行：ESS 实时数据（原 JavaScript 脚本的功能）和新的管理界面\n按日、月、季度、半年、年和总计的能量计数器，包括上一周期、自给率和自用率"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
+      "0.5.0": {
+        "en": "Breaking: distributed via npm from now on; installation from GitHub is no longer supported\nBreaking: requires js-controller 6.0.11 and admin 7.6.20 or newer\nBreaking: ColecTm is now a timestamp in milliseconds (role date) instead of a locale-dependent text\nObject names, status texts and log messages in English (object names with German translation); settings page translated into all languages\nPower states use the role value.power\nFixes: polling interval checked for its maximum, additional PV inverters only use confirmed values (ack), possible unhandled error while polling, obsolete states with history settings are kept",
+        "de": "Breaking: Verteilung ab jetzt über npm; die Installation aus GitHub wird nicht mehr unterstützt\nBreaking: js-controller 6.0.11 und Admin 7.6.20 oder neuer werden vorausgesetzt\nBreaking: ColecTm ist jetzt ein Zeitstempel in Millisekunden (Rolle date) statt eines Textes, dessen Format von der Spracheinstellung abhängt\nObjektnamen, Statustexte und Log-Meldungen auf Englisch (Objektnamen mit deutscher Übersetzung); Einstellungsseite in alle Sprachen übersetzt\nLeistungswerte nutzen die Rolle value.power\nKorrekturen: Abfrageintervall wird auf den Höchstwert geprüft, zusätzliche PV-Erzeuger nutzen nur bestätigte Werte (ack), möglicher unbehandelter Fehler beim Abruf, veraltete Datenpunkte mit History-Einstellungen bleiben erhalten",
+        "ru": "Критическое изменение: распространяется теперь через npm; установка из GitHub больше не поддерживается\nКритическое изменение: требуются js-controller 6.0.11 и admin 7.6.20 или новее\nКритическое изменение: ColecTm теперь отметка времени в миллисекундах (роль date) вместо текста, зависящего от локали\nНазвания объектов, тексты состояний и сообщения журнала на английском языке (названия объектов с немецким переводом); страница настроек переведена на все языки\nСостояния мощности используют роль value.power\nИсправления: интервал опроса проверяется на максимум, дополнительные PV-инверторы используют только подтверждённые значения (ack), возможная необработанная ошибка при опросе, устаревшие состояния с настройками истории сохраняются",
+        "pt": "Alteração incompatível: distribuído a partir de agora via npm; a instalação a partir do GitHub deixa de ser suportada\nAlteração incompatível: requer js-controller 6.0.11 e admin 7.6.20 ou mais recente\nAlteração incompatível: ColecTm é agora um carimbo de data/hora em milissegundos (função date) em vez de um texto dependente da localização\nNomes de objetos, textos de estado e mensagens de registo em inglês (nomes de objetos com tradução alemã); página de configurações traduzida para todos os idiomas\nOs estados de potência usam a função value.power\nCorreções: o intervalo de consulta é verificado quanto ao máximo, inversores FV adicionais usam apenas valores confirmados (ack), possível erro não tratado durante a consulta, estados obsoletos com definições de histórico são mantidos",
+        "nl": "Breaking: wordt voortaan via npm verspreid; installatie vanaf GitHub wordt niet meer ondersteund\nBreaking: vereist js-controller 6.0.11 en admin 7.6.20 of nieuwer\nBreaking: ColecTm is nu een tijdstempel in milliseconden (rol date) in plaats van een landinstellingsafhankelijke tekst\nObjectnamen, statusteksten en logberichten in het Engels (objectnamen met Duitse vertaling); instellingenpagina vertaald in alle talen\nVermogensstatussen gebruiken de rol value.power\nCorrecties: opvraaginterval wordt op het maximum gecontroleerd, extra PV-omvormers gebruiken alleen bevestigde waarden (ack), mogelijke onafgehandelde fout bij het opvragen, verouderde datapunten met historie-instellingen blijven behouden",
+        "fr": "Changement incompatible : distribué désormais via npm ; l'installation depuis GitHub n'est plus prise en charge\nChangement incompatible : nécessite js-controller 6.0.11 et admin 7.6.20 ou plus récent\nChangement incompatible : ColecTm est désormais un horodatage en millisecondes (rôle date) au lieu d'un texte dépendant des paramètres régionaux\nNoms d'objets, textes d'état et messages de journal en anglais (noms d'objets avec traduction allemande) ; page de paramètres traduite dans toutes les langues\nLes états de puissance utilisent le rôle value.power\nCorrections : l'intervalle d'interrogation est vérifié par rapport au maximum, les onduleurs PV supplémentaires n'utilisent que des valeurs confirmées (ack), erreur non gérée possible lors de l'interrogation, les états obsolètes avec des paramètres d'historique sont conservés",
+        "it": "Modifica incompatibile: distribuito d'ora in poi tramite npm; l'installazione da GitHub non è più supportata\nModifica incompatibile: richiede js-controller 6.0.11 e admin 7.6.20 o successivi\nModifica incompatibile: ColecTm è ora un timestamp in millisecondi (ruolo date) invece di un testo dipendente dalle impostazioni locali\nNomi degli oggetti, testi di stato e messaggi di log in inglese (nomi degli oggetti con traduzione tedesca); pagina delle impostazioni tradotta in tutte le lingue\nGli stati di potenza usano il ruolo value.power\nCorrezioni: l'intervallo di interrogazione viene verificato rispetto al massimo, gli inverter FV aggiuntivi usano solo valori confermati (ack), possibile errore non gestito durante l'interrogazione, gli stati obsoleti con impostazioni della cronologia vengono mantenuti",
+        "es": "Cambio incompatible: se distribuye a partir de ahora a través de npm; la instalación desde GitHub ya no es compatible\nCambio incompatible: requiere js-controller 6.0.11 y admin 7.6.20 o posterior\nCambio incompatible: ColecTm es ahora una marca de tiempo en milisegundos (rol date) en lugar de un texto dependiente de la configuración regional\nNombres de objetos, textos de estado y mensajes de registro en inglés (nombres de objetos con traducción al alemán); página de configuración traducida a todos los idiomas\nLos estados de potencia usan el rol value.power\nCorrecciones: se comprueba el máximo del intervalo de consulta, los inversores FV adicionales solo usan valores confirmados (ack), posible error no controlado durante la consulta, se conservan los estados obsoletos con ajustes de historial",
+        "pl": "Zmiana niezgodna wstecz: od teraz dystrybucja przez npm; instalacja z GitHub nie jest już obsługiwana\nZmiana niezgodna wstecz: wymaga js-controller 6.0.11 i admin 7.6.20 lub nowszych\nZmiana niezgodna wstecz: ColecTm jest teraz znacznikiem czasu w milisekundach (rola date) zamiast tekstu zależnego od ustawień regionalnych\nNazwy obiektów, teksty stanów i komunikaty dziennika po angielsku (nazwy obiektów z tłumaczeniem na niemiecki); strona ustawień przetłumaczona na wszystkie języki\nStany mocy używają roli value.power\nPoprawki: interwał odpytywania jest sprawdzany pod kątem maksimum, dodatkowe falowniki PV używają tylko potwierdzonych wartości (ack), możliwy nieobsłużony błąd podczas odpytywania, przestarzałe stany z ustawieniami historii są zachowywane",
+        "uk": "Несумісна зміна: відтепер поширюється через npm; встановлення з GitHub більше не підтримується\nНесумісна зміна: потрібні js-controller 6.0.11 і admin 7.6.20 або новіші\nНесумісна зміна: ColecTm тепер є позначкою часу в мілісекундах (роль date) замість тексту, що залежить від мовних налаштувань\nНазви об'єктів, тексти станів і повідомлення журналу англійською мовою (назви об'єктів з німецьким перекладом); сторінку налаштувань перекладено всіма мовами\nСтани потужності використовують роль value.power\nВиправлення: інтервал опитування перевіряється на максимум, додаткові PV-інвертори використовують лише підтверджені значення (ack), можлива необроблена помилка під час опитування, застарілі стани з налаштуваннями історії зберігаються",
+        "zh-cn": "不兼容更改：今后通过 npm 分发；不再支持从 GitHub 安装\n不兼容更改：需要 js-controller 6.0.11 和 admin 7.6.20 或更高版本\n不兼容更改：ColecTm 现在是以毫秒为单位的时间戳（角色 date），而不是依赖区域设置的文本\n对象名称、状态文本和日志消息改为英文（对象名称带有德语翻译）；设置页面已翻译成所有语言\n功率状态使用角色 value.power\n修复：检查轮询间隔的最大值，附加光伏逆变器仅使用已确认的值 (ack)，修复轮询时可能出现的未处理错误，保留带有历史记录设置的过时状态"
       }
     },
-    "title": "Q.HOME+ ESS HYB-G2",
     "titleLang": {
       "en": "Q.HOME+ ESS HYB-G2",
       "de": "Q.HOME+ ESS HYB-G2",
@@ -92,58 +27,65 @@
       "it": "Q.HOME+ ESS HYB-G2",
       "es": "Q.HOME+ ESS HYB-G2",
       "pl": "Q.HOME+ ESS HYB-G2",
+      "uk": "Q.HOME+ ESS HYB-G2",
       "zh-cn": "Q.HOME+ ESS HYB-G2"
     },
     "desc": {
-      "en": "Q.HOME+ ESS HYB-G2",
-      "de": "Q.HOME+ ESS HYB-G2",
-      "ru": "Q.HOME+ ESS HYB-G2",
-      "pt": "Q.HOME+ ESS HYB-G2",
-      "nl": "Q.HOME+ ESS HYB-G2",
-      "fr": "Q.HOME+ ESS HYB-G2",
-      "it": "Q.HOME+ ESS HYB-G2",
-      "es": "Q.HOME+ ESS HYB-G2",
-      "pl": "Q.HOME+ ESS HYB-G2",
-      "zh-cn": "Q.HOME+ ESS HYB-G2"
+      "en": "Real-time values and energy counters of a Q CELLS Q.HOME+ ESS HYB-G2 home storage system",
+      "de": "Echtzeitwerte und Energiezähler eines Q CELLS Q.HOME+ ESS HYB-G2 Heimspeichers",
+      "ru": "Данные в реальном времени и счётчики энергии домашнего накопителя Q CELLS Q.HOME+ ESS HYB-G2",
+      "pt": "Valores em tempo real e contadores de energia de um sistema de armazenamento doméstico Q CELLS Q.HOME+ ESS HYB-G2",
+      "nl": "Realtime waarden en energietellers van een Q CELLS Q.HOME+ ESS HYB-G2 thuisbatterij",
+      "fr": "Valeurs en temps réel et compteurs d'énergie d'un système de stockage domestique Q CELLS Q.HOME+ ESS HYB-G2",
+      "it": "Valori in tempo reale e contatori di energia di un sistema di accumulo domestico Q CELLS Q.HOME+ ESS HYB-G2",
+      "es": "Valores en tiempo real y contadores de energía de un sistema de almacenamiento doméstico Q CELLS Q.HOME+ ESS HYB-G2",
+      "pl": "Wartości w czasie rzeczywistym i liczniki energii domowego magazynu energii Q CELLS Q.HOME+ ESS HYB-G2",
+      "uk": "Дані в реальному часі та лічильники енергії домашнього накопичувача Q CELLS Q.HOME+ ESS HYB-G2",
+      "zh-cn": "Q CELLS Q.HOME+ ESS HYB-G2 家用储能系统的实时数据和能量计数器"
     },
     "authors": [
-      "Sebastian <kontakt@jansesoft.de>"
+      "Exc3pt10n <kontakt@jansesoft.de>"
     ],
     "keywords": [
       "QCells",
+      "Q CELLS",
       "Q.HOME+",
       "ESS",
       "HYB-G2",
       "photovoltaic",
-      "battery"
+      "battery",
+      "energy"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "qhome-ess-hyb-g2.png",
     "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/master/admin/qhome-ess-hyb-g2.png",
-    "readme": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/main/admin/qhome-ess-hyb-g2.png",
+    "readme": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/blob/main/README.md",
     "loglevel": "info",
+    "tier": 3,
     "mode": "daemon",
     "type": "energy",
     "compact": true,
-    "dependencies": [
-      {
-        "js-controller": ">=5.0.19"
-      }
-    ],
+    "connectionType": "local",
+    "dataSource": "poll",
     "adminUI": {
       "config": "json"
     },
-    "connectionType": "local",
-    "dataSource": "poll",
-    "tier": 3,
+    "dependencies": [
+      {
+        "js-controller": ">=6.0.11"
+      }
+    ],
     "globalDependencies": [
       {
-        "admin": ">=6.13.16"
+        "admin": ">=7.6.20"
       }
-    ]
+    ],
+    "nogit": true
   },
   "native": {
     "hostname": "qhome.local",

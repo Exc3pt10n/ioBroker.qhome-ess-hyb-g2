@@ -1,48 +1,41 @@
 {
   "name": "iobroker.qhome-ess-hyb-g2",
-  "version": "0.4.0",
-  "description": "Q.HOME+ ESS HYB-G2",
+  "version": "0.5.0",
+  "description": "Real-time values and energy counters of a Q CELLS Q.HOME+ ESS HYB-G2 home storage system",
   "author": {
-    "name": "Sebastian",
+    "name": "Exc3pt10n",
     "email": "kontakt@jansesoft.de"
   },
   "homepage": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2",
   "license": "MIT",
   "keywords": [
+    "ioBroker",
+    "iobroker",
+    "adapter",
     "QCells",
+    "Q CELLS",
     "Q.HOME+",
     "ESS",
     "HYB-G2",
     "energy",
     "battery",
-    "inverter"
+    "inverter",
+    "photovoltaic"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^3.3.2",
+    "@iobroker/adapter-core": "^3.4.3",
     "axios": "^1.21.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
-    "@iobroker/testing": "^5.1.1",
-    "@types/chai": "^5.2.2",
-    "@types/chai-as-promised": "^8.0.2",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^14.18.63",
-    "@types/proxyquire": "^1.3.31",
-    "@types/sinon": "^17.0.4",
-    "@types/sinon-chai": "^4.0.0",
-    "chai": "^6.2.0",
-    "chai-as-promised": "^8.0.2",
+    "@iobroker/testing": "^6.3.3",
+    "@types/node": "^22.20.7",
     "eslint": "^9.37.0",
-    "globals": "^14.0.0",
-    "mocha": "^11.7.4",
-    "proxyquire": "^2.1.3",
-    "sinon": "^21.0.0",
-    "sinon-chai": "^4.0.1"
+    "globals": "^14.0.0"
   },
   "main": "main.js",
   "files": [
@@ -62,7 +55,6 @@
   "bugs": {
     "url": "https://github.com/Exc3pt10n/ioBroker.qhome-ess-hyb-g2/issues"
   },
-  "readmeFilename": "README.md",
   "engines": {
     "node": ">=22"
   }

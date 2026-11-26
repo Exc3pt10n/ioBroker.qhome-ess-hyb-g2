@@ -1,0 +1,12 @@
+{
+    "ESS hostname / IP address": "Nazwa hosta / adres IP ESS",
+    "e.g. qhome.local or 192.168.1.50": "np. qhome.local lub 192.168.1.50",
+    "Battery capacity (kWh)": "Pojemność baterii (kWh)",
+    "Polling interval (seconds)": "Interwał odpytywania (sekundy)",
+    "Additional PV inverters": "Dodatkowe falowniki PV",
+    "Power data points of other PV inverters (e.g. from another adapter). They are added to PvPwTotal and the PV counters. Because the Q.HOME meters at the grid connection point, consumption is then calculated from the energy balance. Values older than 60 s count as 0.": "Punkty danych mocy innych falowników PV (np. z innego adaptera). Są doliczane do PvPwTotal i liczników PV. Ponieważ Q.HOME mierzy w punkcie przyłączenia do sieci, zużycie jest wtedy obliczane z bilansu energii. Wartości starsze niż 60 s liczą się jako 0.",
+    "Active": "Aktywny",
+    "Name": "Nazwa",
+    "Power data point": "Punkt danych mocy",
+    "Unit": "Jednostka"
+}

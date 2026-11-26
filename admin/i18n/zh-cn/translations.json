@@ -1,0 +1,12 @@
+{
+    "ESS hostname / IP address": "ESS 主机名 / IP 地址",
+    "e.g. qhome.local or 192.168.1.50": "例如 qhome.local 或 192.168.1.50",
+    "Battery capacity (kWh)": "电池容量 (kWh)",
+    "Polling interval (seconds)": "轮询间隔（秒）",
+    "Additional PV inverters": "附加光伏逆变器",
+    "Power data points of other PV inverters (e.g. from another adapter). They are added to PvPwTotal and the PV counters. Because the Q.HOME meters at the grid connection point, consumption is then calculated from the energy balance. Values older than 60 s count as 0.": "其他光伏逆变器的功率数据点（例如来自其他适配器）。它们会计入 PvPwTotal 和光伏计数器。由于 Q.HOME 在电网接入点测量，此时用电量根据能量平衡计算。超过 60 秒的值按 0 计算。",
+    "Active": "启用",
+    "Name": "名称",
+    "Power data point": "功率数据点",
+    "Unit": "单位"
+}

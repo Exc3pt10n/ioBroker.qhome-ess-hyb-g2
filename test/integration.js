@@ -56,6 +56,11 @@ tests.integration(path.join(__dirname, ".."), {
         chai.expect((await get("GridPwFeedInWb")).val).to.equal(500);
         chai.expect((await get("BtLast")).val).to.equal(240);
         chai.expect((await get("BtStusCd")).ack).to.equal(true);
+        // Abfragezeitpunkt als Zeitstempel (ms, Rolle date)
+        chai.expect((await get("ColecTm")).val).to.equal(new Date(2025, 10, 10, 14, 30, 5).getTime());
+        const colecObj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.ColecTm");
+        chai.expect(colecObj.common.type).to.equal("number");
+        chai.expect(colecObj.common.role).to.equal("date");
 
         // Zähler: Zeitraum gesetzt, Gesamt-Datenpunkt ohne Vorzeitraum
         chai.expect((await get("counters.year.periodKey")).val).to.equal(String(new Date().getFullYear()));
@@ -106,6 +111,23 @@ tests.integration(path.join(__dirname, ".."), {
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
+        // Objekt aus 0.4.0 mit SQL-Einstellungen (wie in einer echten Installation)
+        const sqlCustom = { "sql.0": { enabled: true, changesOnly: true, retention: 604800 } };
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.PvPw", {
+          type: "state",
+          common: {
+            name: "Photovoltaikleistung Q.HOME", type: "number", role: "value", unit: "kW", read: true, write: false,
+            custom: sqlCustom,
+          },
+          native: {},
+        });
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.ColecTm", {
+          type: "state",
+          common: { name: "Abfragezeitpunkt", type: "string", role: "text", unit: "", read: true, write: false },
+          native: {},
+        });
+        await harness.states.setStateAsync("qhome-ess-hyb-g2.0.ColecTm", { val: "26.11.2026, 07:35:51", ack: true });
+
         // Objekt aus einer älteren Version mit alter Statusbezeichnung
         await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.BtStusCd", {
           type: "state",
@@ -131,13 +153,24 @@ tests.integration(path.join(__dirname, ".."), {
         chai.expect(await get("day.PvGen")).to.be.greaterThan(0).and.lessThan(0.01);
         chai.expect(await get("total.PvGen")).to.be.greaterThan(1000).and.lessThan(1000.01);
 
+        // Update von 0.4.0: SQL-Einstellungen bleiben, Name/Rolle werden aktualisiert
+        const pvObj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPw");
+        chai.expect(pvObj.common.custom).to.deep.equal(sqlCustom);
+        chai.expect(pvObj.common.role).to.equal("value.power");
+        chai.expect(pvObj.common.name).to.deep.equal({ en: "PV power Q.HOME", de: "Photovoltaikleistung Q.HOME" });
+        // ColecTm: Typ wechselt von Text zu Zeitstempel, der Wert wird beim ersten Abruf ersetzt
+        const colec = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.ColecTm");
+        chai.expect(colec.common.type).to.equal("number");
+        chai.expect(colec.common.role).to.equal("date");
+        chai.expect((await harness.states.getStateAsync("qhome-ess-hyb-g2.0.ColecTm")).val).to.be.a("number");
+
         // Bestehendes Objekt wurde auf die neue Bezeichnung aktualisiert
         const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");
-        chai.expect(obj.common.states).to.deep.equal({ 0: "Entladen", 1: "Laden", 2: "Bereit" });
+        chai.expect(obj.common.states).to.deep.equal({ 0: "Discharging", 1: "Charging", 2: "Idle" });
 
         // PvPwTotal ist wieder ein regulärer Datenpunkt (PV Q.HOME + zusätzliche Erzeuger)
         const total = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal");
-        chai.expect(total.common.name).to.equal("Photovoltaikleistung Gesamt");
+        chai.expect(total.common.name).to.deep.equal({ en: "PV power total", de: "Photovoltaikleistung Gesamt" });
         chai.expect((await harness.states.getStateAsync("qhome-ess-hyb-g2.0.PvPwTotal")).val).to.equal(2);
       });
     });

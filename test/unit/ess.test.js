@@ -22,12 +22,15 @@ const base = {
 };
 
 describe("transformTimestamp", () => {
-  it("wandelt YYYYMMDDhhmmss in ein lokales Datum um", () => {
-    const expected = new Date(2025, 10, 10, 14, 30, 5).toLocaleString();
+  it("wandelt YYYYMMDDhhmmss (Ortszeit) in Millisekunden um", () => {
+    const expected = new Date(2025, 10, 10, 14, 30, 5).getTime();
     expect(transformTimestamp("20251110143005")).to.equal(expected);
+    expect(transformTimestamp(20251110143005)).to.equal(expected);
   });
-  it("gibt unbekannte Formate unverändert zurück", () => {
-    expect(transformTimestamp("abc")).to.equal("abc");
+  it("liefert null für unbekannte oder fehlende Werte", () => {
+    expect(transformTimestamp("abc")).to.equal(null);
+    expect(transformTimestamp(undefined)).to.equal(null);
+    expect(transformTimestamp("20251399999999")).to.be.a("number"); // Date rechnet über, bleibt eine Zahl
   });
 });
 
@@ -93,6 +96,7 @@ describe("computeValues mit echter Geräteantwort", () => {
 
   it("verarbeitet gemischte Zahl-/String-Werte", () => {
     const v = computeValues(real, 4);
+    expect(v.ColecTm).to.equal(new Date(2026, 10, 11, 10, 40, 56).getTime());
     expect(v.GridStusCd).to.equal(0);
     expect(v.BtStusCd).to.equal(2);
     expect(v.GridPwPurchase).to.equal(0.7);
@@ -107,8 +111,8 @@ describe("computeValues mit echter Geräteantwort", () => {
     expect(v.BtLast).to.equal(21);
   });
 
-  it("Status 2 heißt \"Bereit\" (Batterie ruht, z. B. bei 7 % SoC)", () => {
-    expect(STATES.BtStusCd.states[2]).to.equal("Bereit");
+  it("Status 2 heißt \"Idle\" (Batterie ruht, z. B. bei 7 % SoC)", () => {
+    expect(STATES.BtStusCd.states[2]).to.equal("Idle");
   });
 
   it("Energiebilanz: Verbrauch = Netzbezug + PV (Batterie ruht)", () => {
@@ -158,6 +162,30 @@ describe("computeValues mit zusätzlichem PV-Erzeuger (Zähler am Hausanschluss)
   it("negative oder ungültige Erzeugerleistung zählt als 0", () => {
     expect(computeValues(status, 4, { extPvKw: -0.01, hasExt: true }).PvPwExt).to.equal(0);
     expect(computeValues(status, 4, { extPvKw: NaN, hasExt: true }).PvPwExt).to.equal(0);
+  });
+});
+
+describe("Objektnamen", () => {
+  const { counterObjects } = require("../../lib/counters");
+  const nonAscii = /[^\x20-\x7e]/;
+
+  it("jeder Datenpunkt hat einen englischen und einen deutschen Namen", () => {
+    const all = [
+      ...Object.entries(STATES).map(([id, d]) => [id, d.name]),
+      ...Object.entries(counterObjects()).map(([id, o]) => [`counters.${id}`, o.common.name]),
+    ];
+    for (const [id, name] of all) {
+      expect(name, id).to.be.an("object");
+      expect(name.en, `${id}.en`).to.be.a("string").and.not.match(nonAscii);
+      expect(name.de, `${id}.de`).to.be.a("string").that.is.not.empty;
+    }
+  });
+
+  it("Statustexte sind englisch", () => {
+    for (const d of Object.values(STATES)) {
+      for (const t of Object.values(d.states || {})) expect(t).to.not.match(nonAscii);
+    }
+    expect(STATES.GridStusCd.states).to.deep.equal({ 0: "Purchase", 1: "Feed-in" });
   });
 });
 

@@ -111,6 +111,23 @@ tests.integration(path.join(__dirname, ".."), {
         await harness.states.setStateAsync(`${ns}.total.periodKey`, { val: "total", ack: true });
         await harness.states.setStateAsync(`${ns}.total.PvGen`, { val: 1000, ack: true });
 
+        // Objekt aus 0.4.0 mit SQL-Einstellungen (wie in einer echten Installation)
+        const sqlCustom = { "sql.0": { enabled: true, changesOnly: true, retention: 604800 } };
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.PvPw", {
+          type: "state",
+          common: {
+            name: "Photovoltaikleistung Q.HOME", type: "number", role: "value", unit: "kW", read: true, write: false,
+            custom: sqlCustom,
+          },
+          native: {},
+        });
+        await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.ColecTm", {
+          type: "state",
+          common: { name: "Abfragezeitpunkt", type: "string", role: "text", unit: "", read: true, write: false },
+          native: {},
+        });
+        await harness.states.setStateAsync("qhome-ess-hyb-g2.0.ColecTm", { val: "26.11.2026, 07:35:51", ack: true });
+
         // Objekt aus einer älteren Version mit alter Statusbezeichnung
         await harness.objects.setObjectAsync("qhome-ess-hyb-g2.0.BtStusCd", {
           type: "state",
@@ -135,6 +152,17 @@ tests.integration(path.join(__dirname, ".."), {
         // Heute neu begonnen, Gesamt läuft weiter, auch über den Verbindungsabbruch hinweg
         chai.expect(await get("day.PvGen")).to.be.greaterThan(0).and.lessThan(0.01);
         chai.expect(await get("total.PvGen")).to.be.greaterThan(1000).and.lessThan(1000.01);
+
+        // Update von 0.4.0: SQL-Einstellungen bleiben, Name/Rolle werden aktualisiert
+        const pvObj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPw");
+        chai.expect(pvObj.common.custom).to.deep.equal(sqlCustom);
+        chai.expect(pvObj.common.role).to.equal("value.power");
+        chai.expect(pvObj.common.name).to.deep.equal({ en: "PV power Q.HOME", de: "Photovoltaikleistung Q.HOME" });
+        // ColecTm: Typ wechselt von Text zu Zeitstempel, der Wert wird beim ersten Abruf ersetzt
+        const colec = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.ColecTm");
+        chai.expect(colec.common.type).to.equal("number");
+        chai.expect(colec.common.role).to.equal("date");
+        chai.expect((await harness.states.getStateAsync("qhome-ess-hyb-g2.0.ColecTm")).val).to.be.a("number");
 
         // Bestehendes Objekt wurde auf die neue Bezeichnung aktualisiert
         const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");

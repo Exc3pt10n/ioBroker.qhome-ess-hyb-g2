@@ -1,6 +1,6 @@
 {
   "name": "iobroker.qhome-ess-hyb-g2",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Real-time values and energy counters of a Q CELLS Q.HOME+ ESS HYB-G2 home storage system",
   "author": {
     "name": "Exc3pt10n",

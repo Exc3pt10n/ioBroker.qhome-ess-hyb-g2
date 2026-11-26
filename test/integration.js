@@ -133,11 +133,11 @@ tests.integration(path.join(__dirname, ".."), {
 
         // Bestehendes Objekt wurde auf die neue Bezeichnung aktualisiert
         const obj = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.BtStusCd");
-        chai.expect(obj.common.states).to.deep.equal({ 0: "Entladen", 1: "Laden", 2: "Bereit" });
+        chai.expect(obj.common.states).to.deep.equal({ 0: "Discharging", 1: "Charging", 2: "Idle" });
 
         // PvPwTotal ist wieder ein regulärer Datenpunkt (PV Q.HOME + zusätzliche Erzeuger)
         const total = await harness.objects.getObjectAsync("qhome-ess-hyb-g2.0.PvPwTotal");
-        chai.expect(total.common.name).to.equal("Photovoltaikleistung Gesamt");
+        chai.expect(total.common.name).to.deep.equal({ en: "PV power total", de: "Photovoltaikleistung Gesamt" });
         chai.expect((await harness.states.getStateAsync("qhome-ess-hyb-g2.0.PvPwTotal")).val).to.equal(2);
       });
     });

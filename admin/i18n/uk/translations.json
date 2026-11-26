@@ -1,0 +1,12 @@
+{
+    "ESS hostname / IP address": "Ім'я хоста / IP-адреса ESS",
+    "e.g. qhome.local or 192.168.1.50": "наприклад, qhome.local або 192.168.1.50",
+    "Battery capacity (kWh)": "Ємність батареї (кВт·год)",
+    "Polling interval (seconds)": "Інтервал опитування (секунди)",
+    "Additional PV inverters": "Додаткові PV-інвертори",
+    "Power data points of other PV inverters (e.g. from another adapter). They are added to PvPwTotal and the PV counters. Because the Q.HOME meters at the grid connection point, consumption is then calculated from the energy balance. Values older than 60 s count as 0.": "Точки даних потужності інших PV-інверторів (наприклад, з іншого адаптера). Вони додаються до PvPwTotal і лічильників PV. Оскільки Q.HOME вимірює в точці підключення до мережі, споживання тоді розраховується з енергетичного балансу. Значення, старші за 60 с, вважаються рівними 0.",
+    "Active": "Активно",
+    "Name": "Назва",
+    "Power data point": "Точка даних потужності",
+    "Unit": "Одиниця"
+}

@@ -9,6 +9,9 @@ const { ExternalSources, normalizeSources } = require("./lib/external");
 /** Zählerstände spätestens alle x ms in die Datenpunkte schreiben */
 const COUNTER_FLUSH_MS = 10 * 1000;
 
+/** Größte zulässige Timer-Dauer in Node.js (ms), größere Werte lösen sofort aus */
+const MAX_TIMER_MS = 2147483647;
+
 class QHomeEssHybG2 extends utils.Adapter {
   /**
    * @param {Partial<utils.AdapterOptions>} [options]
@@ -38,16 +41,17 @@ class QHomeEssHybG2 extends utils.Adapter {
     const batCapacity = parseFloat(String(this.config.batCapacity));
     const interval = parseFloat(String(this.config.uptIntervall));
 
-    if (!hostname || !(batCapacity > 0) || !(interval > 0)) {
+    const intervalMs = Math.round(interval * 1000);
+    if (!hostname || !(batCapacity > 0) || !(intervalMs >= 1000 && intervalMs <= MAX_TIMER_MS)) {
       this.log.error(
-        `Konfiguration ungültig (hostname: "${hostname}", batCapacity: ${this.config.batCapacity}, uptIntervall: ${this.config.uptIntervall}). Adapter wird nicht gestartet.`
+        `Invalid configuration (hostname: "${hostname}", batCapacity: ${this.config.batCapacity}, uptIntervall: ${this.config.uptIntervall}; the polling interval must be between 1 and ${Math.floor(MAX_TIMER_MS / 1000)} seconds). Adapter is not started.`
       );
       return;
     }
 
     this.hostname = hostname;
     this.batCapacity = batCapacity;
-    this.intervalMs = Math.max(1, interval) * 1000;
+    this.intervalMs = intervalMs;
     this.url = `http://${hostname}/R3EMSAPP_REAL.ems?file=ESSRealtimeStatus.json`;
 
     await this.setupExternalSources();
@@ -64,13 +68,11 @@ class QHomeEssHybG2 extends utils.Adapter {
     for (const src of this.external.sources) {
       const obj = await this.getForeignObjectAsync(src.id);
       if (!obj) {
-        this.log.warn(`Zusätzlicher PV-Erzeuger "${src.name}": Datenpunkt ${src.id} existiert nicht`);
+        this.log.warn(`Additional PV inverter "${src.name}": state ${src.id} does not exist`);
       }
       await this.subscribeForeignStatesAsync(src.id);
       this.external.update(src.id, await this.getForeignStateAsync(src.id));
-      this.log.info(
-        `Zusätzlicher PV-Erzeuger "${src.name}": ${src.id} (${src.factor === 1 ? "kW" : "W"})`
-      );
+      this.log.info(`Additional PV inverter "${src.name}": ${src.id} (${src.factor === 1 ? "kW" : "W"})`);
     }
   }
 
@@ -87,24 +89,35 @@ class QHomeEssHybG2 extends utils.Adapter {
     if (!this.external.configured) return 0;
     const { kw, newlyStale, recovered } = this.external.sumKw(Date.now());
     for (const s of newlyStale) {
-      const msg = `Zusätzlicher PV-Erzeuger "${s.name}" liefert keine aktuellen Werte, zählt als 0 kW`;
+      const msg = `Additional PV inverter "${s.name}" provides no current values, counted as 0 kW`;
       // Nachts (letzter Wert 0) ist das normal, sonst ein Problem
       if (s.lastKw > 0) this.log.warn(msg);
       else this.log.debug(msg);
     }
     for (const name of recovered) {
-      this.log.debug(`Zusätzlicher PV-Erzeuger "${name}" liefert wieder Werte`);
+      this.log.debug(`Additional PV inverter "${name}" provides values again`);
     }
     return kw;
   }
 
-  /** Datenpunkte früherer Versionen löschen */
+  /**
+   * Datenpunkte früherer Versionen löschen. Hat ein Datenpunkt Einstellungen
+   * anderer Adapter (History, SQL, InfluxDB …) in common.custom, bleibt er
+   * erhalten, damit diese Einstellungen nicht verloren gehen.
+   */
   async removeObsoleteStates() {
     for (const id of OBSOLETE_STATES) {
       const obj = await this.getObjectAsync(id);
       if (!obj) continue;
+      const custom = obj.common && obj.common.custom;
+      if (custom && Object.keys(custom).length > 0) {
+        this.log.warn(
+          `Obsolete state ${id} is no longer updated but was kept because it has custom settings (e.g. history); delete it manually if no longer needed`
+        );
+        continue;
+      }
       await this.delObjectAsync(id);
-      this.log.info(`Veralteten Datenpunkt ${id} gelöscht`);
+      this.log.info(`Obsolete state ${id} deleted`);
     }
   }
 
@@ -131,7 +144,7 @@ class QHomeEssHybG2 extends utils.Adapter {
   async createCounterObjects() {
     await this.extendObjectAsync("counters", {
       type: "folder",
-      common: { name: "Energiezähler" },
+      common: { name: { en: "Energy counters", de: "Energiezähler" } },
       native: {},
     });
     for (const [id, def] of Object.entries(counterObjects())) {
@@ -190,6 +203,11 @@ class QHomeEssHybG2 extends utils.Adapter {
     }
   }
 
+  /** poll() aus dem Timer: Fehler abfangen statt unbehandelter Promise-Ablehnung */
+  pollSafe() {
+    this.poll().catch((e) => this.log.error(`Unexpected error while polling: ${e && e.message ? e.message : e}`));
+  }
+
   async poll() {
     if (this.stopped) return;
 
@@ -199,7 +217,7 @@ class QHomeEssHybG2 extends utils.Adapter {
       });
       const status = response.data && response.data.ESSRealtimeStatus;
       if (!status) {
-        throw new Error("Antwort enthält kein ESSRealtimeStatus");
+        throw new Error("Response contains no ESSRealtimeStatus");
       }
 
       const values = computeValues(status, this.batCapacity, {
@@ -213,7 +231,7 @@ class QHomeEssHybG2 extends utils.Adapter {
       const now = Date.now();
       const rolled = this.counters.update(values, now);
       if (rolled.length > 0) {
-        this.log.debug(`Zeitraumwechsel: ${rolled.join(", ")}`);
+        this.log.debug(`Period change: ${rolled.join(", ")}`);
         await this.writePreviousPeriods(rolled);
       }
       if (rolled.length > 0 || now - this.lastFlush >= COUNTER_FLUSH_MS) {
@@ -221,13 +239,13 @@ class QHomeEssHybG2 extends utils.Adapter {
       }
       await this.setStateChangedAsync("info.connection", true, true);
       if (this.lastPollFailed) {
-        this.log.info(`Verbindung zu ${this.hostname} wiederhergestellt`);
+        this.log.info(`Connection to ${this.hostname} restored`);
         this.lastPollFailed = false;
       }
     } catch (ex) {
       this.counters.interrupt();
       await this.setStateChangedAsync("info.connection", false, true);
-      const msg = `Abruf von ${this.hostname} fehlgeschlagen: ${ex.message}`;
+      const msg = `Polling ${this.hostname} failed: ${ex.message}`;
       // Nur beim ersten Fehler warnen, danach nicht jede Sekunde das Log fluten
       if (this.lastPollFailed) this.log.debug(msg);
       else this.log.warn(msg);
@@ -236,7 +254,7 @@ class QHomeEssHybG2 extends utils.Adapter {
 
     if (!this.stopped) {
       // Nächster Abruf erst nach Abschluss des vorherigen (keine Überlappung)
-      this.pollTimer = this.setTimeout(() => this.poll(), this.intervalMs);
+      this.pollTimer = this.setTimeout(() => this.pollSafe(), this.intervalMs);
     }
   }
 

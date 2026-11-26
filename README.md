@@ -137,6 +137,11 @@ See [DEVELOPMENT.md](DEVELOPMENT.md).
     ### **WORK IN PROGRESS**
 -->
 
+### 0.5.1 (2026-11-26)
+
+- (Exc3pt10n) Maintenance release: first release that is published to npm by the release pipeline (trusted publishing
+  with provenance). No functional changes
+
 ### 0.5.0 (2026-11-26)
 
 - (Exc3pt10n) **Breaking:** distributed via npm from now on; installation from GitHub is no longer supported. Install
